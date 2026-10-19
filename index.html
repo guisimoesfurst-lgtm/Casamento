@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="locked">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guilherme &amp; Patricia · 18 de dezembro de 2026</title>
+<meta name="description" content="Convite de casamento de Guilherme e Patricia — 18 de dezembro de 2026.">
+<meta name="theme-color" content="#F5F1E9">
+<meta name="color-scheme" content="light">
+<!-- Pré-visualização ao compartilhar o link no WhatsApp/Instagram.
+     Quando tiver uma foto, envie-a ao repositório e troque o caminho abaixo. -->
+<meta property="og:title" content="Guilherme & Patricia">
+<meta property="og:description" content="Toque no selo para abrir nosso convite · 18 · 12 · 2026">
+<!-- <meta property="og:image" content="fotos/capa-compartilhar.jpg"> -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%236E7A50'/%3E%3Ctext x='32' y='41' font-size='26' text-anchor='middle' fill='%23EDE4CC' font-family='Georgia,serif'%3EG%26amp;P%3C/text%3E%3C/svg%3E">
+
+<!-- Fontes gratuitas do Google Fonts (com alternativas locais caso não carreguem) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Pinyon+Script&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>document.documentElement.classList.add('js');</script>
+<noscript><style>#cover{display:none!important}html.locked,html.locked body{overflow:auto!important}</style></noscript>
+
+<style>
+/* ==========================================================================
+   1. TOKENS — cores, fontes e medidas. Altere aqui para mudar o visual todo.
+   ========================================================================== */
+:root{
+  --marfim:   #F5F1E9;
+  --grafite:  #292822;
+  --salvia:   #A5AD96;
+  --fundo-2:  #EEEADF;
+  --salvia-escura: #5E6650;   /* sálvia com contraste suficiente para texto */
+  --cera:     #6E7A50;        /* verde-oliva do selo */
+  --linha:    #D9D3C4;
+  --papel:    #F3EEE4;        /* papel da capa */
+
+  --f-titulo: "Cormorant Garamond", "Cormorant", Garamond, "Times New Roman", serif;
+  --f-script: "Pinyon Script", "Snell Roundhand", "Apple Chancery", cursive;
+  --f-texto:  "Jost", "Helvetica Neue", Arial, sans-serif;
+
+  --selo: clamp(118px, min(34vw, 25vh), 196px);  /* tamanho do selo de cera */
+  --ease: cubic-bezier(.7,0,.2,1);
+
+  color-scheme: light;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+html.locked, html.locked body{overflow:hidden;height:100%}
+body{
+  margin:0;
+  background:var(--marfim);
+  color:var(--grafite);
+  font-family:var(--f-texto);
+  font-weight:300;
+  font-size:1.0625rem;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--grafite);outline-offset:4px;border-radius:4px}
+.sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+[hidden]{display:none!important}
+
+/* Textura de linho reutilizável (gerada por SVG, sem imagens externas) */
+.linho{
+  background-color:var(--papel);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .32 0 0 0 0 .25 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(0deg, rgba(80,70,50,.022) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(80,70,50,.022) 0 1px, transparent 1px 3px);
+}
+
+/* ==========================================================================
+   2. CAPA — convite fechado (duas abas de papel unidas pelo selo)
+   ========================================================================== */
+#cover{
+  position:fixed; inset:0; z-index:50;
+  perspective:2200px;
+  overflow:hidden;
+  transition:opacity .5s ease, visibility 0s linear .5s;
+}
+.door{
+  position:absolute; top:0; bottom:0; width:50%;
+  transition:transform 1.5s var(--ease), opacity .6s ease .95s;
+  will-change:transform;
+  backface-visibility:hidden;
+}
+.door::after{ /* sombra que escurece a aba ao girar */
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(90deg, rgba(41,40,34,.0), rgba(41,40,34,.22));
+  opacity:0; transition:opacity 1.2s var(--ease);
+}
+.door--l{left:0; transform-origin:left center;
+  box-shadow: inset -14px 0 18px -16px rgba(41,40,34,.45);}
+.door--r{right:0; transform-origin:right center;
+  box-shadow: inset 14px 0 18px -16px rgba(41,40,34,.45);}
+.door--r::after{background:linear-gradient(270deg, rgba(41,40,34,0), rgba(41,40,34,.22))}
+
+/* Barbante */
+.rope{
+  position:absolute; left:0; right:0; height:8px; border-radius:6px;
+  background:
+    repeating-linear-gradient(118deg, #A9844F 0 3px, #D8BD8E 3px 5px, #8E6A3C 5px 8px);
+  box-shadow:0 2px 2px rgba(70,48,18,.28), 0 0 0 .5px rgba(120,90,50,.35);
+}
+.door--l .rope{transform-origin:right center; left:-4%}
+.door--r .rope{transform-origin:left center; right:-4%}
+.door--l .rope.r1{top:calc(50% - 13px); transform:rotate(1.4deg)}
+.door--l .rope.r2{top:calc(50% + 5px);  transform:rotate(-1.1deg)}
+.door--r .rope.r1{top:calc(50% - 13px); transform:rotate(-1deg)}
+.door--r .rope.r2{top:calc(50% + 5px);  transform:rotate(1.3deg)}
+
+/* Etiqueta de papel rasgado */
+.tag{
+  position:absolute; z-index:2;
+  right:calc(var(--selo) * .3);
+  top:calc(50% - var(--selo) * .36);
+  padding:.65em 1.4em .65em 1em;
+  background:#F7F2E7;
+  font-family:var(--f-titulo); font-weight:500;
+  font-size:clamp(.7rem, 2.8vw, 1.3rem);
+  letter-spacing:.08em; text-transform:uppercase; white-space:nowrap;
+  color:#4a473d;
+  transform:rotate(-4deg);
+  filter:drop-shadow(0 3px 4px rgba(41,40,34,.18));
+  clip-path:polygon(2% 8%,9% 3%,17% 7%,26% 2%,36% 6%,47% 1%,58% 5%,69% 2%,80% 6%,90% 2%,100% 5%,100% 96%,90% 99%,79% 95%,68% 99%,57% 94%,46% 98%,35% 95%,24% 99%,13% 95%,4% 98%,0% 92%,2% 70%,0% 52%,3% 34%,0% 20%);
+  cursor:pointer;
+}
+.t-touch{display:none}
+@media (hover:none){ .t-click{display:none} .t-touch{display:inline} }
+
+/* Raminho de oliveira e mosquitinhos */
+.sprig{
+  position:absolute; z-index:1; pointer-events:none;
+  width:calc(var(--selo) * 1.12);
+  left:calc(var(--selo) * -.5);
+  bottom:calc(50% + var(--selo) * .4);
+}
+
+/* Selo: cada aba guarda uma metade, que se separa ao abrir */
+.seal-half{
+  position:absolute; z-index:3;
+  top:calc(50% - var(--selo) * .6);
+  width:calc(var(--selo) * .6); height:calc(var(--selo) * 1.2);
+  overflow:hidden;
+  transition:transform .26s ease;
+}
+.seal-half svg{width:calc(var(--selo) * 1.2); height:calc(var(--selo) * 1.2); display:block;
+  filter:drop-shadow(0 6px 7px rgba(41,40,34,.28));}
+.door--l .seal-half{right:0; transform-origin:right center}
+.door--r .seal-half{left:0;  transform-origin:left center}
+.door--r .seal-half svg{margin-left:calc(var(--selo) * -.6)}
+
+/* Botão invisível sobre o selo (é ele que recebe o toque/clique e o foco) */
+#sealBtn{
+  position:absolute; z-index:10; left:50%; top:50%;
+  width:var(--selo); height:var(--selo);
+  transform:translate(-50%,-50%);
+  border:0; border-radius:50%; background:transparent; cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+#sealBtn:focus-visible{outline:2px solid var(--marfim); box-shadow:0 0 0 5px var(--grafite); outline-offset:2px}
+
+/* Texto da capa */
+.cover-top, .cover-hint{
+  position:absolute; left:0; right:0; z-index:5; text-align:center; pointer-events:none;
+  transition:opacity .4s ease;
+}
+.cover-top{bottom:calc(env(safe-area-inset-bottom,0px) + 7vh + 3.4rem)}
+.cover-top .ini{font-family:var(--f-titulo); font-size:clamp(1.6rem,5.5vw,2.4rem); letter-spacing:.18em; color:#3d3b33}
+.cover-top .data{font-size:.82rem; letter-spacing:.24em; color:var(--salvia-escura); margin-top:.2rem}
+.cover-hint{bottom:calc(env(safe-area-inset-bottom,0px) + 7vh); font-size:.9rem; color:#5d5a4f; padding:0 1.5rem}
+.cover-hint > span{display:inline-block; animation:respira 2.8s ease-in-out infinite}
+@keyframes respira{0%,100%{opacity:.55}50%{opacity:1}}
+
+/* Brilho suave que convida ao toque */
+.pulse{
+  position:absolute; z-index:2; left:50%; top:50%;
+  width:var(--selo); height:var(--selo); border-radius:50%;
+  transform:translate(-50%,-50%); pointer-events:none;
+  box-shadow:0 0 0 0 rgba(110,122,80,.35);
+  animation:anel 2.8s ease-out infinite;
+}
+@keyframes anel{0%{box-shadow:0 0 0 0 rgba(110,122,80,.32)}70%,100%{box-shadow:0 0 0 22px rgba(110,122,80,0)}}
+
+/* --- Estados da animação de abertura --- */
+#cover.is-pressed .seal-half{transform:scale(.93)}
+#cover.is-open .pulse, #cover.is-pressed .pulse{animation:none; opacity:0}
+#cover.is-open .cover-top, #cover.is-open .cover-hint{opacity:0}
+#cover.is-open .door--l{transform:rotateY(-104deg); opacity:0}
+#cover.is-open .door--r{transform:rotateY(104deg);  opacity:0}
+#cover.is-open .door::after{opacity:1}
+#cover.is-open .door--l .seal-half{transform:translateX(-4px) rotate(-7deg)}
+#cover.is-open .door--r .seal-half{transform:translateX(4px) rotate(6deg)}
+#cover.is-open{pointer-events:none}
+#cover.is-gone{opacity:0; visibility:hidden}
+
+/* ==========================================================================
+   3. CONVITE — página principal
+   ========================================================================== */
+main{position:relative}
+.sec{padding:clamp(4.5rem,12vw,8rem) 1.5rem; text-align:center}
+.sec--alt{background:var(--fundo-2)}
+.wrap{max-width:40rem; margin:0 auto}
+.wrap--wide{max-width:60rem}
+
+h1,h2,h3{font-family:var(--f-titulo); font-weight:400; line-height:1.15; margin:0}
+h2{font-size:clamp(2rem,7vw,3rem); letter-spacing:.005em}
+.sub{font-family:var(--f-titulo); font-style:italic; font-size:1.2rem; color:var(--salvia-escura); margin:.4rem 0 0}
+.lead{max-width:34rem; margin:1.6rem auto 0; font-family:var(--f-titulo); font-size:1.28rem; line-height:1.7; font-weight:400}
+.ramo{width:92px; margin:0 auto 1.4rem; display:block; color:var(--salvia)}
+
+/* Hero */
+.hero{
+  min-height:100vh; min-height:100svh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:5rem 1.5rem 4rem; text-align:center; position:relative;
+}
+.hero .para{font-family:var(--f-titulo); font-style:italic; font-size:1.15rem; color:var(--salvia-escura); margin:0 0 2rem}
+.hero h1{display:flex; flex-direction:column; align-items:center; gap:.05em}
+.hero .nome{font-family:var(--f-script); font-size:clamp(3.6rem,16vw,7.5rem); line-height:1.05; font-weight:400}
+.hero .e{font-family:var(--f-titulo); font-style:italic; font-size:clamp(1.4rem,5vw,2rem); color:var(--salvia-escura)}
+.hero .data{font-family:var(--f-titulo); font-size:clamp(1.3rem,4.5vw,1.8rem); letter-spacing:.32em; margin:2.2rem 0 0; padding-left:.32em}
+.hero .frase{max-width:22rem; margin:1.4rem auto 0; font-family:var(--f-titulo); font-style:italic; font-size:1.2rem; color:#4f4c43}
+.hero .desca{position:absolute; bottom:calc(2rem + env(safe-area-inset-bottom,0px)); font-size:.85rem; color:#6c695e; text-decoration:none; padding:.5rem}
+.hero .desca::after{content:""; display:block; width:1px; height:34px; margin:.5rem auto 0; background:currentColor; opacity:.5}
+#heroTitle:focus{outline:none}
+
+/* Sequência de entrada do hero (o único momento animado da página) */
+.js .hero .in{opacity:0; transform:translateY(10px)}
+.revealed .hero .in{opacity:1; transform:none; transition:opacity 1s ease, transform 1s ease; transition-delay:calc(var(--i,0) * .16s + .35s)}
+
+/* Galeria */
+.galeria{display:grid; grid-template-columns:repeat(3,1fr); gap:.75rem; margin-top:2.6rem}
+.galeria > *{aspect-ratio:4/5; border-radius:2px; overflow:hidden}
+.galeria > *:first-child{grid-column:span 2; grid-row:span 2; aspect-ratio:auto}
+.foto-btn{padding:0; border:0; background:var(--linha); cursor:zoom-in; display:block; width:100%; height:100%}
+.foto-btn img{width:100%; height:100%; object-fit:cover; transition:transform .6s ease}
+.foto-btn:hover img{transform:scale(1.03)}
+.foto-vazia{
+  display:flex; align-items:center; justify-content:center; flex-direction:column; gap:.4rem;
+  background:var(--marfim); border:1px dashed #C9C2B1; color:#7b776b; font-size:.85rem; padding:1rem
+}
+.foto-vazia svg{width:28px; color:var(--salvia)}
+.historia-texto{text-align:left; max-width:34rem; margin:2.4rem auto 0; font-family:var(--f-titulo); font-size:1.22rem; line-height:1.75; font-weight:400}
+.historia-texto p{margin:0 0 1em}
+.nota{font-size:.88rem; color:#6c695e; font-style:normal}
+
+/* Lightbox */
+dialog.lb{border:0; padding:0; background:transparent; max-width:min(92vw,900px); max-height:92vh}
+dialog.lb::backdrop{background:rgba(41,40,34,.86)}
+dialog.lb img{max-height:80vh; width:auto; margin:0 auto; border-radius:2px}
+.lb-bar{display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-top:.8rem; color:var(--marfim); font-size:.9rem}
+.lb-bar button{background:none; border:1px solid rgba(245,241,233,.5); color:var(--marfim); padding:.45rem .9rem; border-radius:999px; font:inherit; cursor:pointer}
+.lb-bar button:focus-visible{outline-color:var(--marfim)}
+
+/* Contagem regressiva */
+.contagem{display:grid; grid-template-columns:repeat(4,1fr); max-width:34rem; margin:2.6rem auto 0}
+.contagem div{padding:.4rem 0}
+.contagem div + div{border-left:1px solid var(--linha)}
+.contagem b{display:block; font-family:var(--f-titulo); font-weight:400; font-size:clamp(2.2rem,10vw,3.6rem); line-height:1; font-variant-numeric:tabular-nums}
+.contagem small{display:block; margin-top:.5rem; font-size:.82rem; color:#6c695e}
+.contagem-nota{margin-top:1.8rem}
+
+/* Local */
+.local{margin:2.6rem auto 0; max-width:30rem; display:grid; gap:1.6rem}
+.local dt{font-size:.85rem; color:var(--salvia-escura); margin-bottom:.15rem}
+.local dd{margin:0; font-family:var(--f-titulo); font-size:1.35rem; line-height:1.4}
+.local dd.vazio{color:#8a867a; font-style:italic}
+.aviso{max-width:28rem; margin:2rem auto 0; padding:1rem 1.2rem; border-top:1px solid var(--linha); border-bottom:1px solid var(--linha); font-size:.95rem; color:#57544a}
+
+/* Botões */
+.acoes{margin-top:2.4rem; display:flex; flex-direction:column; align-items:center; gap:.8rem}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
+  min-height:52px; padding:.85rem 2rem; border-radius:999px;
+  background:var(--grafite); color:var(--marfim); border:1px solid var(--grafite);
+  font-family:var(--f-texto); font-weight:400; font-size:1rem; letter-spacing:.02em;
+  text-decoration:none; cursor:pointer;
+  transition:background .25s ease, color .25s ease;
+}
+.btn:hover{background:#3d3b33}
+.btn--linha{background:transparent; color:var(--grafite)}
+.btn--linha:hover{background:var(--grafite); color:var(--marfim)}
+.btn[disabled], .btn[aria-disabled="true"]{background:transparent; color:#8a867a; border-color:#C9C2B1; cursor:not-allowed}
+.btn-nota{font-size:.88rem; color:#6c695e; margin:0}
+
+/* Formulário de confirmação */
+.rsvp-card{max-width:27rem; margin:2.4rem auto 0; text-align:left}
+.rsvp-card h3{font-size:clamp(1.6rem,6vw,2rem); text-align:center}
+.rsvp-card h3:focus{outline:none}
+.ola-sub{text-align:center; margin:.35rem 0 1.8rem; color:#57544a}
+.carregando{text-align:center; color:#6c695e; font-style:italic; font-family:var(--f-titulo); font-size:1.15rem}
+.campo{margin:0 0 1.35rem; padding:0; border:0; min-width:0}
+.campo > label, .campo > legend{display:block; padding:0; font-size:.92rem; font-weight:400; color:var(--salvia-escura); margin-bottom:.4rem}
+.campo input[type=text], .campo select, .campo textarea{
+  width:100%; min-height:50px; padding:.75rem .95rem;
+  font:inherit; font-size:1rem; font-weight:400; color:var(--grafite);
+  background:#FBF9F4; border:1px solid #CBC4B3; border-radius:10px;
+  -webkit-appearance:none; appearance:none;
+}
+.campo select{background-image:linear-gradient(45deg,transparent 50%,#5d5a4f 50%),linear-gradient(135deg,#5d5a4f 50%,transparent 50%);
+  background-position:calc(100% - 20px) 50%, calc(100% - 15px) 50%; background-size:5px 5px; background-repeat:no-repeat; padding-right:2.5rem}
+.campo textarea{min-height:92px; resize:vertical; line-height:1.5}
+.campo input:focus-visible, .campo select:focus-visible, .campo textarea:focus-visible{outline:2px solid var(--grafite); outline-offset:1px; border-color:var(--grafite)}
+.codigo-input{text-transform:uppercase; letter-spacing:.14em; text-align:center; font-size:1.15rem!important}
+.ajuda{margin:.45rem 0 0; font-size:.86rem; color:#6c695e}
+.opcoes{display:grid; gap:.6rem}
+.opcao{display:flex; align-items:center; gap:.8rem; min-height:54px; padding:.8rem 1rem; border:1px solid #CBC4B3; border-radius:12px; background:#FBF9F4; cursor:pointer; font-weight:400}
+.opcao:has(input:checked){border-color:var(--grafite); background:#fff; box-shadow:inset 0 0 0 1px var(--grafite)}
+.opcao input{width:1.2rem; height:1.2rem; margin:0; accent-color:var(--cera); flex:none}
+.opcao:has(input:focus-visible){outline:2px solid var(--grafite); outline-offset:2px}
+.msg{margin:0 0 1.2rem; padding:.85rem 1rem; border-radius:10px; background:var(--fundo-2); font-size:.94rem; color:#4a473e}
+.msg--erro{background:#F4E4DE; color:#7A2E22}
+.rsvp-card .acoes{margin-top:1.8rem}
+.rsvp-card .btn{width:100%; max-width:20rem}
+.link-btn{background:none; border:0; padding:.5rem; font:inherit; font-size:.9rem; color:#57544a; text-decoration:underline; text-underline-offset:4px; cursor:pointer}
+.sucesso{text-align:center}
+.sucesso .selo-ok{width:64px; height:64px; margin:0 auto 1rem; display:block}
+
+/* Rodapé */
+footer{padding:4.5rem 1.5rem calc(3rem + env(safe-area-inset-bottom,0px)); text-align:center; background:var(--grafite); color:var(--marfim)}
+footer .selo-mini{width:76px; height:76px; margin:0 auto 1.2rem; display:block}
+footer .nomes{font-family:var(--f-script); font-size:clamp(2.4rem,9vw,3.4rem); line-height:1.1; margin:0}
+footer .data{font-family:var(--f-titulo); letter-spacing:.3em; margin:.8rem 0 0; color:#cfd3c6}
+footer .reabrir{margin-top:2.2rem; background:none; border:0; color:#b9bcb0; font:inherit; font-size:.88rem; text-decoration:underline; text-underline-offset:4px; cursor:pointer; padding:.5rem}
+footer :focus-visible{outline-color:var(--marfim)}
+
+@media (min-width:720px){
+  .galeria{gap:1rem}
+}
+@media (max-width:420px){
+  .contagem b{font-size:2.1rem}
+  .contagem small{font-size:.75rem}
+}
+
+/* ==========================================================================
+   4. MOVIMENTO REDUZIDO — sem giros 3D, só um esmaecer rápido
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important}
+  .door, .seal-half{transition:none!important}
+  #cover.is-open .door{transform:none!important; opacity:1}
+  #cover{transition:opacity .35s ease, visibility 0s linear .35s}
+  .js .hero .in{transform:none}
+  .revealed .hero .in{transition:opacity .4s ease; transition-delay:0s}
+  .foto-btn img{transition:none}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ======================================================================
+     DESENHOS REUTILIZÁVEIS (selo, folha, flor) — definidos uma vez só
+     ====================================================================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="cera" cx="36%" cy="30%" r="78%">
+      <stop offset="0"   stop-color="#909C70"/>
+      <stop offset=".55" stop-color="#6E7A50"/>
+      <stop offset="1"   stop-color="#4C5636"/>
+    </radialGradient>
+    <radialGradient id="ceraDentro" cx="50%" cy="46%" r="56%">
+      <stop offset="0"   stop-color="#7C875C"/>
+      <stop offset=".8"  stop-color="#6B7651"/>
+      <stop offset="1"   stop-color="#56613F"/>
+    </radialGradient>
+    <filter id="relevo" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation=".7" result="b"/>
+      <feOffset in="b" dx="1.1" dy="1.5" result="o1"/>
+      <feFlood flood-color="#2A301B" flood-opacity=".6"/>
+      <feComposite in2="o1" operator="in" result="sombra"/>
+      <feOffset in="b" dx="-.7" dy="-.9" result="o2"/>
+      <feFlood flood-color="#FFFBEA" flood-opacity=".3"/>
+      <feComposite in2="o2" operator="in" result="luz"/>
+      <feMerge><feMergeNode in="sombra"/><feMergeNode in="luz"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <path id="folha" d="M0 0 C12 -9 42 -10 64 0 C42 10 12 9 0 0 Z"/>
+    <g id="flor">
+      <circle r="4.2" fill="#FBF8F1" stroke="#DCD5C5" stroke-width=".8"/>
+      <circle cx="4" cy="-3" r="3.4" fill="#FBF8F1" stroke="#DCD5C5" stroke-width=".8"/>
+      <circle cx="-3.6" cy="-3.4" r="3.2" fill="#FBF8F1" stroke="#DCD5C5" stroke-width=".8"/>
+      <circle cx=".4" cy="-6" r="2.8" fill="#FBF8F1" stroke="#DCD5C5" stroke-width=".8"/>
+      <circle cx=".3" cy="-2.6" r="1.3" fill="#E8DFC7"/>
+    </g>
+
+    <!-- O selo de cera. viewBox com margem para a sombra. -->
+    <symbol id="selo" viewBox="-20 -20 240 240">
+      <path fill="url(#cera)" d="M101 4 C129 3 152 13 169 31 C187 49 197 71 195 99 C198 128 187 151 169 169 C150 187 127 197 99 195 C71 198 48 186 31 168 C13 150 3 127 5 101 C2 72 14 48 32 31 C50 13 73 2 101 4 Z"/>
+      <path fill="#56603E" opacity=".35" d="M30 150 C42 172 66 188 98 190 C70 192 44 178 30 150 Z"/>
+      <circle cx="100" cy="100" r="74" fill="url(#ceraDentro)" stroke="#525C3B" stroke-width="3"/>
+      <circle cx="99" cy="99" r="74" fill="none" stroke="#A3AE84" stroke-width="1" opacity=".55"/>
+      <g filter="url(#relevo)" fill="#E9E0C6">
+        <text x="74" y="116" font-family="'Pinyon Script', 'Snell Roundhand', cursive" font-size="72" text-anchor="middle">G</text>
+        <text x="101" y="94" font-family="'Cormorant Garamond', Georgia, serif" font-style="italic" font-size="22" text-anchor="middle">&amp;</text>
+        <text x="128" y="134" font-family="'Pinyon Script', 'Snell Roundhand', cursive" font-size="72" text-anchor="middle">P</text>
+        <!-- raminho gravado -->
+        <path d="M58 150 C66 141 74 136 84 133" fill="none" stroke="#E9E0C6" stroke-width="1.4"/>
+        <use href="#folha" transform="translate(64 144) rotate(-120) scale(.16)"/>
+        <use href="#folha" transform="translate(71 139) rotate(-60) scale(.15)"/>
+        <use href="#folha" transform="translate(76 137) rotate(-125) scale(.14)"/>
+      </g>
+      <ellipse cx="66" cy="48" rx="34" ry="12" fill="#fff" opacity=".1" transform="rotate(-30 66 48)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ======================================================================
+     CAPA — convite fechado. Um toque no selo abre tudo.
+     ====================================================================== -->
+<div id="cover" role="dialog" aria-modal="true" aria-labelledby="coverTitle">
+  <h1 id="coverTitle" class="sr-only">Convite de casamento de Guilherme e Patricia</h1>
+
+  <div class="door door--l linho" aria-hidden="true">
+    <span class="rope r1"></span><span class="rope r2"></span>
+    <div class="tag" id="tag"><span class="t-click">Clique no selo</span><span class="t-touch">Toque no selo</span></div>
+    <div class="seal-half"><svg viewBox="0 0 240 240"><use href="#selo"/></svg></div>
+  </div>
+
+  <div class="door door--r linho" aria-hidden="true">
+    <span class="rope r1"></span><span class="rope r2"></span>
+    <!-- raminho de oliveira com mosquitinhos -->
+    <svg class="sprig" viewBox="0 0 200 210" aria-hidden="true">
+      <g fill="none" stroke="#8C8B5F" stroke-width="1.6" stroke-linecap="round">
+        <path d="M92 210 C86 160 72 110 56 46"/>
+        <path d="M96 210 C102 150 112 100 126 40"/>
+        <path d="M100 210 C116 168 140 128 172 86"/>
+        <path d="M70 120 C58 110 46 104 34 102"/>
+        <path d="M84 150 C70 146 58 146 44 150"/>
+        <path d="M110 120 C124 106 134 92 140 72"/>
+      </g>
+      <g>
+        <use href="#folha" fill="#7D8862" transform="translate(126 92) rotate(-58) scale(1.05)"/>
+        <use href="#folha" fill="#93A07A" transform="translate(132 112) rotate(-28) scale(1.1)"/>
+        <use href="#folha" fill="#6C7651" transform="translate(140 104) rotate(-72) scale(.9)"/>
+        <use href="#folha" fill="#8A9670" transform="translate(150 98) rotate(-12) scale(.95)"/>
+        <use href="#folha" fill="#76815A" transform="translate(118 132) rotate(-8) scale(.8)"/>
+        <use href="#folha" fill="#9AA683" transform="translate(110 148) rotate(-40) scale(.75)"/>
+        <use href="#folha" fill="#6F7A55" transform="translate(120 70) rotate(-84) scale(.85)"/>
+      </g>
+      <g>
+        <use href="#flor" transform="translate(56 44)"/>
+        <use href="#flor" transform="translate(50 64) scale(.85)"/>
+        <use href="#flor" transform="translate(62 82) scale(.9)"/>
+        <use href="#flor" transform="translate(34 100) scale(.95)"/>
+        <use href="#flor" transform="translate(44 150)"/>
+        <use href="#flor" transform="translate(126 38) scale(.9)"/>
+        <use href="#flor" transform="translate(120 58) scale(.75)"/>
+        <use href="#flor" transform="translate(72 118) scale(1.15)"/>
+        <use href="#flor" transform="translate(86 140) scale(1.05)"/>
+        <use href="#flor" transform="translate(172 86) scale(.9)"/>
+        <use href="#flor" transform="translate(98 168) scale(.9)"/>
+      </g>
+    </svg>
+    <div class="seal-half"><svg viewBox="0 0 240 240"><use href="#selo"/></svg></div>
+  </div>
+
+  <div class="cover-top" aria-hidden="true">
+    <div class="ini">G &amp; P</div>
+    <div class="data" data-fill="dataCurta">18 · 12 · 2026</div>
+  </div>
+
+  <span class="pulse" aria-hidden="true"></span>
+  <button id="sealBtn" type="button" aria-label="Abrir o convite de Guilherme e Patricia"></button>
+
+  <p class="cover-hint"><span><span class="t-click">Clique</span><span class="t-touch">Toque</span> no selo para abrir nosso convite</span></p>
+</div>
+
+<!-- ======================================================================
+     CONVITE
+     ====================================================================== -->
+<main id="conteudo">
+
+  <!-- Seção 1 — Apresentação -->
+  <header class="hero" id="inicio">
+    <p class="para in" id="saudacao" hidden style="--i:0"></p>
+    <h1 id="heroTitle" tabindex="-1">
+      <span class="nome in" style="--i:1" data-fill="noivoA">Guilherme</span>
+      <span class="e in" style="--i:2">&amp;</span>
+      <span class="nome in" style="--i:3" data-fill="noivoB">Patricia</span>
+    </h1>
+    <p class="data in" style="--i:4"><span class="sr-only" data-fill="dataLonga">18 de dezembro de 2026</span><span aria-hidden="true" data-fill="dataCurta">18 · 12 · 2026</span></p>
+    <p class="frase in" style="--i:5">Uma nova história, um novo capítulo, um para sempre.</p>
+    <a class="desca in" style="--i:6" href="#historia">Continue descendo</a>
+  </header>
+
+  <!-- Seção 2 — Nossa história -->
+  <section class="sec sec--alt" id="historia" aria-labelledby="t-historia">
+    <div class="wrap wrap--wide">
+      <svg class="ramo" viewBox="0 0 120 30" aria-hidden="true"><g fill="currentColor"><path d="M2 15 H118" stroke="currentColor" stroke-width="1"/><use href="#folha" transform="translate(60 15) rotate(-35) scale(.4)"/><use href="#folha" transform="translate(60 15) rotate(-145) scale(.4)"/><use href="#folha" transform="translate(48 15) rotate(-150) scale(.3)"/><use href="#folha" transform="translate(72 15) rotate(-30) scale(.3)"/></g></svg>
+      <h2 id="t-historia">O amor nos trouxe até aqui</h2>
+
+      <!-- A galeria é montada pelo JavaScript a partir de CONFIG.fotos -->
+      <div class="galeria" id="galeria"></div>
+
+      <!-- TEXTO PROVISÓRIO: troque pelos parágrafos da história de vocês -->
+      <div class="historia-texto">
+        <p>Toda história bonita começa com um encontro. A nossa ainda está sendo escrita por aqui, e em breve vamos contar como tudo começou, os caminhos que nos trouxeram até este dia e o que sonhamos para o que vem depois.</p>
+        <p class="nota">Texto provisório. A história do casal será publicada em breve.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 3 — Contagem regressiva -->
+  <section class="sec" id="contagem" aria-labelledby="t-contagem">
+    <div class="wrap">
+      <h2 id="t-contagem">Falta pouco</h2>
+      <p class="sub" data-fill="dataLonga">18 de dezembro de 2026</p>
+      <div class="contagem" role="timer" aria-live="off" id="contador">
+        <div><b id="cd-d">--</b><small>dias</small></div>
+        <div><b id="cd-h">--</b><small>horas</small></div>
+        <div><b id="cd-m">--</b><small>minutos</small></div>
+        <div><b id="cd-s">--</b><small>segundos</small></div>
+      </div>
+      <p class="contagem-nota nota" id="cd-nota"></p>
+    </div>
+  </section>
+
+  <!-- Seção 4 — Cerimônia e recepção -->
+  <section class="sec sec--alt" id="local" aria-labelledby="t-local">
+    <div class="wrap">
+      <h2 id="t-local">Cerimônia e recepção</h2>
+      <p class="aviso" id="local-aviso" hidden>Estamos finalizando os detalhes. Local, endereço e horário aparecerão aqui assim que forem definidos.</p>
+      <dl class="local">
+        <div><dt>Local</dt><dd id="lc-nome"></dd></div>
+        <div><dt>Data e horário</dt><dd id="lc-hora"></dd></div>
+        <div><dt>Endereço</dt><dd id="lc-end"></dd></div>
+      </dl>
+      <div class="acoes" id="lc-acoes"></div>
+    </div>
+  </section>
+
+  <!-- Seção 5 — Confirmação de presença -->
+  <section class="sec" id="rsvp" aria-labelledby="t-rsvp">
+    <div class="wrap">
+      <h2 id="t-rsvp">Sua presença é especial</h2>
+      <p class="lead">Preparamos este dia com muito carinho e ele fica completo com você por perto. Conte para nós se poderá celebrar conosco.</p>
+      <p class="nota" id="rsvp-prazo" hidden></p>
+      <div id="rsvp-box"></div>
+      <p class="sr-only" aria-live="polite" id="rsvp-live"></p>
+    </div>
+  </section>
+
+  <!-- Seção 6 — Lista de presentes -->
+  <section class="sec sec--alt" id="presentes" aria-labelledby="t-presentes">
+    <div class="wrap">
+      <h2 id="t-presentes">Um presente para nossa nova fase</h2>
+      <p class="lead">O maior presente é ter você com a gente. Se quiser nos mimar, reunimos algumas sugestões para o nosso novo lar.</p>
+      <div class="acoes" id="pr-acoes"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <svg class="selo-mini" viewBox="0 0 240 240" aria-hidden="true"><use href="#selo"/></svg>
+  <p class="nomes"><span data-fill="noivoA">Guilherme</span> &amp; <span data-fill="noivoB">Patricia</span></p>
+  <p class="data" data-fill="dataCurta">18 · 12 · 2026</p>
+  <button class="reabrir" type="button" id="reabrir">Ver o convite fechado de novo</button>
+</footer>
+
+<!-- Ampliação das fotos -->
+<dialog class="lb" id="lightbox" aria-label="Foto ampliada">
+  <img id="lb-img" alt="">
+  <div class="lb-bar">
+    <button type="button" id="lb-prev">Anterior</button>
+    <span id="lb-cont"></span>
+    <button type="button" id="lb-next">Próxima</button>
+    <button type="button" id="lb-close">Fechar</button>
+  </div>
+</dialog>
+
+<script>
+/* ==========================================================================
+   CONFIGURAÇÃO — tudo o que vocês vão preencher depois fica AQUI.
+   Campos vazios ("") aparecem no site como "a definir" / "em breve".
+   ========================================================================== */
+const CONFIG = {
+  noivoA: "Guilherme",
+  noivoB: "Patricia",
+
+  // Data do casamento. Enquanto o horário não estiver definido, deixe 00:00
+  // e horarioDefinido: false — a contagem vai até o início do dia 18.
+  // Quando definir, ex.: "2026-12-18T16:30:00-03:00" e horarioDefinido: true.
+  dataISO: "2026-12-18T00:00:00-03:00",
+  horarioDefinido: false,
+
+  local: {
+    nome: "",       // ex.: "Espaço Jardim das Oliveiras"
+    horario: "",    // ex.: "Cerimônia às 16h30, recepção em seguida"
+    endereco: "",   // ex.: "Rua das Flores, 123 — Bairro, Cidade/SP"
+    mapsUrl: ""     // link do Google Maps (Compartilhar → Copiar link). Se vazio e houver endereço, o botão busca o endereço.
+  },
+
+  rsvp: {
+    // URL do App da Web do Google Apps Script (termina em /exec).
+    // Vazio = formulário desativado, com aviso de "abre em breve".
+    scriptUrl: "",
+    prazo: ""       // texto exibido, ex.: "até 18 de novembro de 2026" (o bloqueio real fica no script)
+  },
+
+  presentes: {
+    url: ""         // link da lista de presentes (loja ou site). Vazio = botão desativado.
+  },
+
+  // Fotos do casal. Envie as imagens para uma pasta "fotos" no repositório e liste aqui.
+  // A primeira aparece em destaque. Ex.: { src: "fotos/01.jpg", alt: "Guilherme e Patricia na praia" }
+  fotos: []
+};
+
+/* ==========================================================================
+   A partir daqui não é preciso editar.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  const $  = (s, c = document) => c.querySelector(s);
+  const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
+  const html = document.documentElement;
+  const reduzMovimento = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const ehUrl = (u) => { try { return new URL(u).protocol === 'https:'; } catch (e) { return false; } };
+
+  /* ---------- Parâmetros do link individual ----------
+     ?c=SILVA01            → código do convite (enviado ao formulário)
+     &para=Família%20Silva → saudação personalizada no topo
+     Nada disso fica salvo no site: vem só do link que vocês enviarem. */
+  const params = new URLSearchParams(location.search);
+  const normaliza = (c) => String(c || '').trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '').slice(0, 40);
+  const codigo = normaliza(params.get('c'));
+  const para = (params.get('para') || '').trim().slice(0, 60);
+
+  /* ---------- Textos derivados da configuração ---------- */
+  const dataAlvo = new Date(CONFIG.dataISO);
+  const fmt = (opts) => new Intl.DateTimeFormat('pt-BR', Object.assign({ timeZone: 'America/Sao_Paulo' }, opts)).format(dataAlvo);
+  const dd = fmt({ day: '2-digit' }), mm = fmt({ month: '2-digit' }), aa = fmt({ year: 'numeric' });
+  const textos = {
+    noivoA: CONFIG.noivoA,
+    noivoB: CONFIG.noivoB,
+    dataCurta: `${dd} · ${mm} · ${aa}`,
+    dataLonga: fmt({ day: 'numeric', month: 'long', year: 'numeric' })
+  };
+  $$('[data-fill]').forEach((el) => {
+    const v = textos[el.dataset.fill];
+    if (v) el.textContent = v;
+  });
+
+  if (para) {
+    const s = $('#saudacao');
+    s.textContent = `Para ${para}`;
+    s.hidden = false;
+  }
+
+  /* ======================================================================
+     ABERTURA DO CONVITE
+     ====================================================================== */
+  const cover = $('#cover');
+  const sealBtn = $('#sealBtn');
+  let aberto = false;
+
+  function abrir() {
+    if (aberto) return;
+    aberto = true;
+
+    if (reduzMovimento.matches) {
+      cover.classList.add('is-open', 'is-gone');
+      document.body.classList.add('revealed');
+      setTimeout(concluir, 380);
+      return;
+    }
+    cover.classList.add('is-pressed');            // 1. selo afunda
+    setTimeout(() => {
+      cover.classList.add('is-open');             // 2. selo parte e as abas se abrem
+      document.body.classList.add('revealed');    // 3. convite aparece por trás
+    }, 240);
+    setTimeout(() => cover.classList.add('is-gone'), 240 + 1250);
+    setTimeout(concluir, 240 + 1750);
+  }
+
+  function concluir() {
+    cover.hidden = true;
+    html.classList.remove('locked');
+    const alvo = location.hash && document.getElementById(location.hash.slice(1));
+    if (alvo && alvo.id !== 'inicio') alvo.scrollIntoView();
+    else $('#heroTitle').focus({ preventScroll: true });
+  }
+
+  function fecharDeNovo() {
+    window.scrollTo(0, 0);
+    html.classList.add('locked');
+    cover.hidden = false;
+    cover.classList.remove('is-pressed', 'is-gone');
+    void cover.offsetWidth;                       // garante que a transição rode ao contrário
+    requestAnimationFrame(() => {
+      cover.classList.remove('is-open');
+      aberto = false;
+      sealBtn.focus({ preventScroll: true });
+    });
+  }
+
+  sealBtn.addEventListener('click', abrir);
+  $('#tag').addEventListener('click', abrir);
+  $('#reabrir').addEventListener('click', fecharDeNovo);
+
+  /* ======================================================================
+     GALERIA
+     ====================================================================== */
+  const galeria = $('#galeria');
+  const fotos = (CONFIG.fotos || []).filter((f) => f && f.src);
+  const iconeFoto = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1"/><circle cx="9" cy="10" r="1.6"/><path d="M4 18l5-5 4 4 3-3 4 4"/></svg>';
+
+  if (!fotos.length) {
+    for (let i = 0; i < 3; i++) {
+      const v = document.createElement('div');
+      v.className = 'foto-vazia';
+      v.innerHTML = iconeFoto + '<span>Foto em breve</span>';
+      galeria.appendChild(v);
+    }
+  } else {
+    fotos.forEach((f, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'foto-btn';
+      b.setAttribute('aria-label', `Ampliar foto ${i + 1} de ${fotos.length}${f.alt ? ': ' + f.alt : ''}`);
+      const img = document.createElement('img');
+      img.src = f.src; img.alt = f.alt || ''; img.loading = 'lazy'; img.decoding = 'async';
+      b.appendChild(img);
+      b.addEventListener('click', () => abrirFoto(i));
+      galeria.appendChild(b);
+    });
+  }
+
+  const lb = $('#lightbox'), lbImg = $('#lb-img'), lbCont = $('#lb-cont');
+  let atual = 0;
+  function mostrar(i) {
+    atual = (i + fotos.length) % fotos.length;
+    lbImg.src = fotos[atual].src;
+    lbImg.alt = fotos[atual].alt || `Foto ${atual + 1}`;
+    lbCont.textContent = `${atual + 1} / ${fotos.length}`;
+    const varias = fotos.length > 1;
+    $('#lb-prev').hidden = !varias; $('#lb-next').hidden = !varias;
+  }
+  function abrirFoto(i) {
+    mostrar(i);
+    if (typeof lb.showModal === 'function') lb.showModal();
+    else window.open(fotos[i].src, '_blank', 'noopener');
+  }
+  $('#lb-prev').addEventListener('click', () => mostrar(atual - 1));
+  $('#lb-next').addEventListener('click', () => mostrar(atual + 1));
+  $('#lb-close').addEventListener('click', () => lb.close());
+  lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
+  lb.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') mostrar(atual - 1);
+    if (e.key === 'ArrowRight') mostrar(atual + 1);
+  });
+
+  /* ======================================================================
+     CONTAGEM REGRESSIVA
+     ====================================================================== */
+  const el = { d: $('#cd-d'), h: $('#cd-h'), m: $('#cd-m'), s: $('#cd-s') };
+  const nota = $('#cd-nota');
+  const alvoMs = dataAlvo.getTime();
+  const dois = (n) => String(n).padStart(2, '0');
+  nota.textContent = CONFIG.horarioDefinido
+    ? 'Contagem até o início da cerimônia.'
+    : 'O horário será confirmado em breve. Por enquanto, contamos até o início do dia.';
+
+  let timer;
+  function tick() {
+    const falta = alvoMs - Date.now();
+    if (isNaN(alvoMs)) { nota.textContent = 'Data inválida em CONFIG.dataISO.'; clearInterval(timer); return; }
+    if (falta <= 0) {
+      el.d.textContent = el.h.textContent = el.m.textContent = el.s.textContent = '00';
+      nota.textContent = 'Chegou o grande dia!';
+      clearInterval(timer);
+      return;
+    }
+    const t = Math.floor(falta / 1000);
+    el.d.textContent = Math.floor(t / 86400);
+    el.h.textContent = dois(Math.floor((t % 86400) / 3600));
+    el.m.textContent = dois(Math.floor((t % 3600) / 60));
+    el.s.textContent = dois(t % 60);
+  }
+  tick();
+  timer = setInterval(tick, 1000);
+
+  /* ======================================================================
+     BOTÕES: só viram links quando estiverem configurados
+     ====================================================================== */
+  function botao(destino, { texto, textoPendente, notaPendente, estilo = '' }) {
+    const frag = document.createDocumentFragment();
+    if (ehUrl(destino)) {
+      const a = document.createElement('a');
+      a.className = 'btn ' + estilo;
+      a.href = destino; a.target = '_blank'; a.rel = 'noopener';
+      a.textContent = texto;
+      const sr = document.createElement('span');
+      sr.className = 'sr-only'; sr.textContent = ' (abre em nova aba)';
+      a.appendChild(sr);
+      frag.appendChild(a);
+    } else {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'btn ' + estilo; b.disabled = true;
+      b.textContent = textoPendente || texto;
+      frag.appendChild(b);
+      if (notaPendente) {
+        const p = document.createElement('p');
+        p.className = 'btn-nota'; p.textContent = notaPendente;
+        frag.appendChild(p);
+      }
+    }
+    return frag;
+  }
+
+  /* ---------- Local ---------- */
+  const L = CONFIG.local || {};
+  const preencher = (id, valor, vazio) => {
+    const d = $(id);
+    d.textContent = valor || vazio;
+    d.classList.toggle('vazio', !valor);
+  };
+  preencher('#lc-nome', L.nome, 'A definir');
+  preencher('#lc-hora', [textos.dataLonga, L.horario].filter(Boolean).join(' · ') + (L.horario ? '' : ' · horário a confirmar'), '');
+  $('#lc-hora').classList.remove('vazio');
+  preencher('#lc-end', L.endereco, 'A definir');
+  $('#local-aviso').hidden = Boolean(L.nome && L.endereco && L.horario);
+
+  let mapa = L.mapsUrl;
+  if (!ehUrl(mapa) && L.endereco) mapa = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(L.endereco);
+  $('#lc-acoes').appendChild(botao(mapa, {
+    texto: 'Abrir no Google Maps',
+    textoPendente: 'Mapa disponível em breve',
+    estilo: 'btn--linha'
+  }));
+
+  /* ======================================================================
+     CONFIRMAÇÃO DE PRESENÇA
+     O site conversa com um Google Apps Script ligado à SUA planilha.
+     Nada sobre convidados fica guardado aqui: o site só consulta o código
+     do convite e envia a resposta.
+     ====================================================================== */
+  const R = CONFIG.rsvp || {};
+  const box = $('#rsvp-box');
+  const live = $('#rsvp-live');
+  const API = /^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test((R.scriptUrl || '').trim())
+    ? R.scriptUrl.trim() : '';
+
+  if (R.prazo) {
+    const p = $('#rsvp-prazo');
+    p.textContent = `Pedimos que confirme ${R.prazo}.`;
+    p.hidden = false;
+  }
+
+  // Cria elementos com segurança (textos sempre via textContent)
+  function h(tag, props, ...filhos) {
+    const n = document.createElement(tag);
+    Object.entries(props || {}).forEach(([k, v]) => {
+      if (v == null || v === false) return;
+      if (k === 'class') n.className = v;
+      else if (k === 'text') n.textContent = v;
+      else if (k.startsWith('on')) n.addEventListener(k.slice(2), v);
+      else n.setAttribute(k, v === true ? '' : v);
+    });
+    filhos.flat().forEach((f) => { if (f != null && f !== false) n.append(f); });
+    return n;
+  }
+
+  async function chamar(url, opcoes) {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 20000);
+    try {
+      const r = await fetch(url, Object.assign({ signal: ctrl.signal, redirect: 'follow' }, opcoes));
+      if (!r.ok) throw new Error('rede');
+      return await r.json();
+    } finally {
+      clearTimeout(t);
+    }
+  }
+  const consultar = (c) => chamar(`${API}?acao=consultar&c=${encodeURIComponent(c)}`);
+  // text/plain evita a verificação prévia (CORS) que o Apps Script não aceita
+  const enviar = (dados) => chamar(API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(dados)
+  });
+
+  const ERROS = {
+    nao_encontrado: 'Não encontramos esse código. Confira a mensagem com o link do convite ou fale com os noivos.',
+    limite: 'O número de pessoas passou do limite deste convite.',
+    prazo: 'O prazo para confirmar terminou. Fale diretamente com os noivos.',
+    ocupado: 'Muitas respostas ao mesmo tempo. Tente de novo em alguns segundos.',
+    dados: 'Alguma informação não chegou certa. Confira o formulário e envie de novo.',
+    rede: 'Sem conexão com a lista de convidados. Verifique sua internet e tente de novo. Sua resposta ainda não foi registrada.'
+  };
+
+  let convite = null;
+  let codigoAtual = codigo;
+  let digitado = false;
+  const limpar = () => box.replaceChildren();
+
+  function saudar(nome) {
+    if (para || !nome) return;
+    const s = $('#saudacao');
+    s.textContent = `Para ${nome}`;
+    s.hidden = false;
+  }
+
+  /* --- Etapa 1: código do convite (só aparece se o link não trouxer ?c=) --- */
+  function etapaCodigo(erro, focar) {
+    limpar();
+    const inp = h('input', {
+      type: 'text', id: 'rsvp-cod', class: 'codigo-input', maxlength: '40',
+      autocomplete: 'off', autocapitalize: 'characters', spellcheck: 'false',
+      'aria-describedby': 'rsvp-cod-ajuda', 'aria-invalid': erro ? 'true' : null
+    });
+    inp.value = codigoAtual;
+    const form = h('form', {
+      class: 'rsvp-card', novalidate: true,
+      onsubmit: (e) => {
+        e.preventDefault();
+        const c = normaliza(inp.value);
+        if (!c) return etapaCodigo('Digite o código do seu convite.', true);
+        digitado = true;
+        buscar(c, true);
+      }
+    },
+      erro && h('p', { class: 'msg msg--erro', role: 'alert', text: erro }),
+      h('div', { class: 'campo' },
+        h('label', { for: 'rsvp-cod', text: 'Código do convite' }),
+        inp,
+        h('p', { id: 'rsvp-cod-ajuda', class: 'ajuda', text: 'Ele está na mensagem em que enviamos o link do convite.' })
+      ),
+      h('div', { class: 'acoes' }, h('button', { type: 'submit', class: 'btn', text: 'Continuar' }))
+    );
+    box.append(form);
+    if (focar) inp.focus();
+  }
+
+  async function buscar(c, focar) {
+    codigoAtual = c;
+    limpar();
+    box.append(h('p', { class: 'rsvp-card carregando', text: 'Procurando seu convite…' }));
+    try {
+      const r = await consultar(c);
+      if (!r.ok) return etapaCodigo(ERROS[r.erro] || ERROS.rede, focar);
+      convite = r.convite;
+      saudar(convite.familia);
+      etapaResposta(focar);
+    } catch (e) {
+      etapaCodigo(ERROS.rede, focar);
+    }
+  }
+
+  /* --- Etapa 2: vai ou não vai, quantas pessoas, acompanhantes --- */
+  function etapaResposta(focar) {
+    limpar();
+    const c = convite;
+    const max = Math.max(1, Number(c.maximo) || 1);
+    const respondeu = c.status === 'Confirmado' || c.status === 'Não vai';
+    const titulo = h('h3', { tabindex: '-1', text: `Olá, ${c.familia}` });
+    const sub = h('p', { class: 'ola-sub', text: max > 1 ? `Reservamos até ${max} lugares para vocês.` : 'Reservamos um lugar para você.' });
+
+    if (c.prazoEncerrado) {
+      box.append(h('div', { class: 'rsvp-card' }, titulo, sub,
+        h('p', { class: 'msg', text: respondeu
+          ? `O prazo terminou. Sua resposta registrada: ${c.status === 'Confirmado' ? `vai, ${c.pessoas} pessoa(s)` : 'não vai'}. Para mudar algo, fale com os noivos.`
+          : ERROS.prazo })));
+      if (focar) titulo.focus();
+      return;
+    }
+
+    const vaiAtual = c.status === 'Confirmado' ? 'sim' : c.status === 'Não vai' ? 'nao' : '';
+    const opcao = (valor, rotulo) => h('label', { class: 'opcao' },
+      h('input', { type: 'radio', name: 'vai', value: valor, checked: vaiAtual === valor }),
+      h('span', { text: rotulo }));
+
+    // Quantidade de pessoas (só aparece se o convite permitir mais de uma)
+    const selPessoas = h('select', { id: 'rsvp-pes' },
+      Array.from({ length: max }, (_, i) => h('option', { value: String(i + 1), text: i === 0 ? '1, só eu' : String(i + 1) })));
+    if (c.pessoas >= 1 && c.pessoas <= max) selPessoas.value = String(c.pessoas);
+
+    const anteriores = String(c.acompanhantes || '').split(',').map((x) => x.trim()).filter(Boolean);
+    const caixaAcomp = h('div');
+    function desenharAcomp() {
+      const atuais = $$('input', caixaAcomp).map((i) => i.value);
+      const n = Number(selPessoas.value) - 1;
+      caixaAcomp.replaceChildren();
+      for (let i = 0; i < n; i++) {
+        const id = 'rsvp-ac' + i;
+        const inp = h('input', { type: 'text', id, maxlength: '60', autocomplete: 'off' });
+        inp.value = atuais[i] ?? anteriores[i] ?? '';
+        caixaAcomp.append(h('div', { class: 'campo' }, h('label', { for: id, text: `Nome do acompanhante ${i + 1}` }), inp));
+      }
+    }
+    selPessoas.addEventListener('change', desenharAcomp);
+    desenharAcomp();
+
+    const restr = h('textarea', { id: 'rsvp-res', maxlength: '300', rows: '3' });
+    restr.value = c.restricoes || '';
+    const recado = h('textarea', { id: 'rsvp-msg', maxlength: '500', rows: '3' });
+    recado.value = c.mensagem || '';
+
+    const detalhes = h('div', { id: 'rsvp-det' },
+      max > 1 && h('div', { class: 'campo' }, h('label', { for: 'rsvp-pes', text: 'Quantas pessoas, contando você?' }), selPessoas),
+      caixaAcomp,
+      h('div', { class: 'campo' }, h('label', { for: 'rsvp-res', text: 'Alguma restrição alimentar? (opcional)' }), restr)
+    );
+
+    const erro = h('p', { class: 'msg msg--erro', role: 'alert', hidden: true });
+    const btn = h('button', { type: 'submit', class: 'btn', text: 'Enviar resposta' });
+
+    const form = h('form', { class: 'rsvp-card', novalidate: true },
+      titulo, sub,
+      respondeu && h('p', { class: 'msg', text: `Já recebemos sua resposta${c.respondidoEm ? ' em ' + c.respondidoEm : ''}. Se algo mudou, altere abaixo e envie de novo.` }),
+      h('fieldset', { class: 'campo' }, h('legend', { text: 'Você poderá ir?' }),
+        h('div', { class: 'opcoes' }, opcao('sim', 'Sim, estarei lá'), opcao('nao', 'Não poderei ir'))),
+      detalhes,
+      h('div', { class: 'campo' }, h('label', { for: 'rsvp-msg', text: 'Um recado para os noivos (opcional)' }), recado),
+      erro,
+      h('div', { class: 'acoes' }, btn,
+        digitado && h('button', { type: 'button', class: 'link-btn', text: 'Usar outro código',
+          onclick: () => { codigoAtual = ''; digitado = false; etapaCodigo('', true); } }))
+    );
+
+    const atualizar = () => { detalhes.hidden = form.elements.vai.value !== 'sim'; };
+    form.addEventListener('change', (e) => { if (e.target.name === 'vai') atualizar(); });
+    form.addEventListener('input', () => { erro.hidden = true; });
+    atualizar();
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const vai = form.elements.vai.value;
+      const mostrarErro = (t, alvo) => { erro.textContent = t; erro.hidden = false; if (alvo) alvo.focus(); };
+      if (!vai) return mostrarErro('Escolha se você poderá ir.', form.querySelector('input[name=vai]'));
+
+      const nomes = vai === 'sim' ? $$('input', caixaAcomp) : [];
+      const vazio = nomes.find((i) => !i.value.trim());
+      if (vazio) return mostrarErro('Preencha o nome de cada acompanhante ou diminua o número de pessoas.', vazio);
+
+      erro.hidden = true;
+      btn.disabled = true;
+      btn.textContent = 'Enviando…';
+      try {
+        const r = await enviar({
+          c: codigoAtual,
+          vai,
+          pessoas: vai === 'sim' ? Number(selPessoas.value) : 0,
+          acompanhantes: nomes.map((i) => i.value.trim()),
+          restricoes: vai === 'sim' ? restr.value.trim() : '',
+          mensagem: recado.value.trim()
+        });
+        if (!r.ok) throw new Error(r.erro || 'rede');
+        convite = r.convite;
+        etapaFinal(vai);
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Enviar resposta';
+        mostrarErro(ERROS[err.message] || ERROS.rede);
+      }
+    });
+
+    box.append(form);
+    if (focar) titulo.focus();
+  }
+
+  /* --- Etapa 3: resposta registrada --- */
+  function etapaFinal(vai) {
+    limpar();
+    const t = h('h3', { tabindex: '-1', text: vai === 'sim' ? 'Presença confirmada' : 'Resposta registrada' });
+    const texto = vai === 'sim'
+      ? `Obrigado, ${convite.familia}. ${convite.pessoas > 1 ? `Guardamos ${convite.pessoas} lugares` : 'Guardamos seu lugar'} para celebrar com a gente em ${textos.dataLonga}.`
+      : `Obrigado por avisar, ${convite.familia}. Vamos sentir sua falta.`;
+    // selo pequeno como "carimbo" de confirmação
+    const selo = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    selo.setAttribute('viewBox', '0 0 240 240');
+    selo.setAttribute('class', 'selo-ok');
+    selo.setAttribute('aria-hidden', 'true');
+    const uso = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    uso.setAttribute('href', '#selo');
+    selo.append(uso);
+    box.append(h('div', { class: 'rsvp-card sucesso' },
+      selo, t,
+      h('p', { class: 'ola-sub', text: texto }),
+      h('div', { class: 'acoes' }, h('button', { type: 'button', class: 'btn btn--linha', text: 'Alterar resposta', onclick: () => etapaResposta(true) }))
+    ));
+    t.focus();
+    live.textContent = t.textContent;
+  }
+
+  /* --- Início --- */
+  if (!API) {
+    box.append(h('div', { class: 'acoes' }, botao('', {
+      texto: 'Confirmar presença',
+      notaPendente: 'A confirmação de presença abre em breve. Avisaremos vocês por aqui.'
+    })));
+  } else if (codigoAtual) {
+    buscar(codigoAtual, false);   // link individual: já abre o convite da família
+  } else {
+    etapaCodigo('', false);
+  }
+
+  /* ---------- Presentes ---------- */
+  $('#pr-acoes').appendChild(botao((CONFIG.presentes || {}).url, {
+    texto: 'Ver lista de presentes',
+    notaPendente: 'A lista de presentes estará disponível em breve.',
+    estilo: 'btn--linha'
+  }));
+})();
+</script>
+</body>
+</html>
