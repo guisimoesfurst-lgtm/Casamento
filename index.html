@@ -295,6 +295,7 @@ dialog.lb img{max-height:80vh; width:auto; margin:0 auto; border-radius:2px}
 .rsvp-card{max-width:27rem; margin:2.4rem auto 0; text-align:left}
 .rsvp-card h3{font-size:clamp(1.6rem,6vw,2rem); text-align:center}
 .rsvp-card h3:focus{outline:none}
+form.rsvp-card > h3{margin:0 0 1.6rem}
 .ola-sub{text-align:center; margin:.35rem 0 1.8rem; color:#57544a}
 .carregando{text-align:center; color:#6c695e; font-style:italic; font-family:var(--f-titulo); font-size:1.15rem}
 .campo{margin:0 0 1.35rem; padding:0; border:0; min-width:0}
@@ -309,7 +310,6 @@ dialog.lb img{max-height:80vh; width:auto; margin:0 auto; border-radius:2px}
   background-position:calc(100% - 20px) 50%, calc(100% - 15px) 50%; background-size:5px 5px; background-repeat:no-repeat; padding-right:2.5rem}
 .campo textarea{min-height:92px; resize:vertical; line-height:1.5}
 .campo input:focus-visible, .campo select:focus-visible, .campo textarea:focus-visible{outline:2px solid var(--grafite); outline-offset:1px; border-color:var(--grafite)}
-.codigo-input{text-transform:uppercase; letter-spacing:.14em; text-align:center; font-size:1.15rem!important}
 .ajuda{margin:.45rem 0 0; font-size:.86rem; color:#6c695e}
 .opcoes{display:grid; gap:.6rem}
 .opcao{display:flex; align-items:center; gap:.8rem; min-height:54px; padding:.8rem 1rem; border:1px solid #CBC4B3; border-radius:12px; background:#FBF9F4; cursor:pointer; font-weight:400}
@@ -322,6 +322,16 @@ dialog.lb img{max-height:80vh; width:auto; margin:0 auto; border-radius:2px}
 .rsvp-card .btn{width:100%; max-width:20rem}
 .link-btn{background:none; border:0; padding:.5rem; font:inherit; font-size:.9rem; color:#57544a; text-decoration:underline; text-underline-offset:4px; cursor:pointer}
 .sucesso{text-align:center}
+.sucesso .acoes{display:grid; justify-items:center; gap:.4rem}
+.acomp-lista .campo{margin-bottom:.8rem}
+.acomp-campo{display:flex; gap:.5rem; align-items:stretch}
+.acomp-campo input{flex:1}
+.acomp-remover{flex:none; min-height:50px; padding:0 .9rem; border:1px solid #CBC4B3; border-radius:10px; background:transparent; font:inherit; font-size:.88rem; color:#57544a; cursor:pointer}
+.acomp-remover:hover{border-color:var(--grafite); color:var(--grafite)}
+.acomp-remover:focus-visible{outline:2px solid var(--grafite); outline-offset:1px}
+.rsvp-card .btn--add{width:auto; max-width:none; min-height:46px; padding:.6rem 1.4rem; margin-top:.8rem; font-size:.95rem}
+.acomp-total{margin:.9rem 0 0; font-family:var(--f-titulo); font-style:italic; font-size:1.1rem; color:var(--salvia-escura)}
+.armadilha{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
 .sucesso .selo-ok{width:64px; height:64px; margin:0 auto 1rem; display:block}
 
 /* Rodapé */
@@ -602,8 +612,13 @@ const CONFIG = {
   rsvp: {
     // URL do App da Web do Google Apps Script (termina em /exec).
     // Vazio = formulário desativado, com aviso de "abre em breve".
-    scriptUrl: "",
-    prazo: ""       // texto exibido, ex.: "até 18 de novembro de 2026" (o bloqueio real fica no script)
+    scriptUrl: "https://script.google.com/macros/s/AKfycby0nThRbw7QZmTRem2kUZxiW8Gdj515eKU4Mz_zeGMJxgookkUbCXiHVCGUgc55suhngg/exec",
+    // Último dia para confirmar, no formato "AAAA-MM-DD" (o mesmo PRAZO do script).
+    // O site mostra "até 15 de dezembro de 2026" e fecha o formulário depois desse dia.
+    prazo: "2026-12-15",
+    // Quantos acompanhantes cada pessoa pode incluir (o mesmo MAX_ACOMP do script).
+    // 0 = cada convidado confirma só a si mesmo (o campo de acompanhantes some).
+    maxAcompanhantes: 0
   },
 
   presentes: {
@@ -627,13 +642,10 @@ const CONFIG = {
   const reduzMovimento = window.matchMedia('(prefers-reduced-motion: reduce)');
   const ehUrl = (u) => { try { return new URL(u).protocol === 'https:'; } catch (e) { return false; } };
 
-  /* ---------- Parâmetros do link individual ----------
-     ?c=SILVA01            → código do convite (enviado ao formulário)
-     &para=Família%20Silva → saudação personalizada no topo
-     Nada disso fica salvo no site: vem só do link que vocês enviarem. */
+  /* ---------- Saudação opcional pelo link ----------
+     ?para=Família%20Silva → mostra "Para Família Silva" no topo do convite.
+     É opcional: o link normal, sem nada no final, funciona para todos. */
   const params = new URLSearchParams(location.search);
-  const normaliza = (c) => String(c || '').trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '').slice(0, 40);
-  const codigo = normaliza(params.get('c'));
   const para = (params.get('para') || '').trim().slice(0, 60);
 
   /* ---------- Textos derivados da configuração ---------- */
@@ -841,19 +853,28 @@ const CONFIG = {
 
   /* ======================================================================
      CONFIRMAÇÃO DE PRESENÇA
-     O site conversa com um Google Apps Script ligado à SUA planilha.
-     Nada sobre convidados fica guardado aqui: o site só consulta o código
-     do convite e envia a resposta.
+     Um link igual para todos. O convidado escreve o próprio nome e o de
+     quem vai junto; a resposta é gravada na SUA planilha pelo Apps Script.
+     O site só guarda, no próprio celular do convidado, a resposta que ele
+     mesmo enviou, para que possa alterá-la depois sem criar outra linha.
      ====================================================================== */
   const R = CONFIG.rsvp || {};
   const box = $('#rsvp-box');
   const live = $('#rsvp-live');
   const API = /^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test((R.scriptUrl || '').trim())
     ? R.scriptUrl.trim() : '';
+  const MAX_AC = Math.max(0, Math.min(20, parseInt(R.maxAcompanhantes, 10) || 0));
+  const CHAVE = 'rsvp-gp';
 
-  if (R.prazo) {
+  // Prazo: "AAAA-MM-DD" → texto por extenso e bloqueio depois das 23h59 (Brasília)
+  const prazoFim = /^\d{4}-\d{2}-\d{2}$/.test(R.prazo || '') ? new Date(R.prazo + 'T23:59:59-03:00') : null;
+  const prazoValido = prazoFim && !isNaN(prazoFim);
+  const prazoEncerrado = () => prazoValido && Date.now() > prazoFim.getTime();
+  if (prazoValido) {
     const p = $('#rsvp-prazo');
-    p.textContent = `Pedimos que confirme ${R.prazo}.`;
+    const txt = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Sao_Paulo' })
+      .format(new Date(R.prazo + 'T12:00:00-03:00'));
+    p.textContent = `Pedimos que confirme até ${txt}.`;
     p.hidden = false;
   }
 
@@ -871,6 +892,18 @@ const CONFIG = {
     return n;
   }
 
+  // Resposta guardada neste aparelho (pode falhar em modo privado: tudo segue funcionando)
+  function lerSalvo() {
+    try { const v = JSON.parse(localStorage.getItem(CHAVE) || 'null'); return v && v.id ? v : null; }
+    catch (e) { return null; }
+  }
+  function salvar(v) { try { localStorage.setItem(CHAVE, JSON.stringify(v)); } catch (e) { /* sem memória local */ } }
+  function esquecer() { try { localStorage.removeItem(CHAVE); } catch (e) { /* sem memória local */ } }
+  function novoId() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return 'id-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+  }
+
   async function chamar(url, opcoes) {
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), 20000);
@@ -882,7 +915,6 @@ const CONFIG = {
       clearTimeout(t);
     }
   }
-  const consultar = (c) => chamar(`${API}?acao=consultar&c=${encodeURIComponent(c)}`);
   // text/plain evita a verificação prévia (CORS) que o Apps Script não aceita
   const enviar = (dados) => chamar(API, {
     method: 'POST',
@@ -891,142 +923,129 @@ const CONFIG = {
   });
 
   const ERROS = {
-    nao_encontrado: 'Não encontramos esse código. Confira a mensagem com o link do convite ou fale com os noivos.',
-    limite: 'O número de pessoas passou do limite deste convite.',
+    nome: 'Escreva seu nome para enviarmos a resposta.',
+    limite: MAX_AC > 0
+      ? `Cada resposta pode incluir até ${MAX_AC} ${MAX_AC === 1 ? 'acompanhante' : 'acompanhantes'}. Se precisar de mais, fale com os noivos.`
+      : 'Cada resposta vale só para a própria pessoa. Se tiver alguma dúvida, fale com os noivos.',
     prazo: 'O prazo para confirmar terminou. Fale diretamente com os noivos.',
     ocupado: 'Muitas respostas ao mesmo tempo. Tente de novo em alguns segundos.',
     dados: 'Alguma informação não chegou certa. Confira o formulário e envie de novo.',
-    rede: 'Sem conexão com a lista de convidados. Verifique sua internet e tente de novo. Sua resposta ainda não foi registrada.'
+    rede: 'Sem conexão com a lista de presença. Verifique sua internet e tente de novo. Sua resposta ainda não foi registrada.'
   };
 
-  let convite = null;
-  let codigoAtual = codigo;
-  let digitado = false;
   const limpar = () => box.replaceChildren();
+  const primeiroNome = (n) => String(n || '').trim().split(/\s+/)[0] || '';
 
-  function saudar(nome) {
-    if (para || !nome) return;
-    const s = $('#saudacao');
-    s.textContent = `Para ${nome}`;
-    s.hidden = false;
+  function seloPequeno() {
+    const selo = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    selo.setAttribute('viewBox', '0 0 240 240');
+    selo.setAttribute('class', 'selo-ok');
+    selo.setAttribute('aria-hidden', 'true');
+    const uso = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    uso.setAttribute('href', '#selo');
+    selo.append(uso);
+    return selo;
   }
 
-  /* --- Etapa 1: código do convite (só aparece se o link não trouxer ?c=) --- */
-  function etapaCodigo(erro, focar) {
+  function aviso(texto) {
     limpar();
-    const inp = h('input', {
-      type: 'text', id: 'rsvp-cod', class: 'codigo-input', maxlength: '40',
-      autocomplete: 'off', autocapitalize: 'characters', spellcheck: 'false',
-      'aria-describedby': 'rsvp-cod-ajuda', 'aria-invalid': erro ? 'true' : null
-    });
-    inp.value = codigoAtual;
-    const form = h('form', {
-      class: 'rsvp-card', novalidate: true,
-      onsubmit: (e) => {
-        e.preventDefault();
-        const c = normaliza(inp.value);
-        if (!c) return etapaCodigo('Digite o código do seu convite.', true);
-        digitado = true;
-        buscar(c, true);
-      }
-    },
-      erro && h('p', { class: 'msg msg--erro', role: 'alert', text: erro }),
-      h('div', { class: 'campo' },
-        h('label', { for: 'rsvp-cod', text: 'Código do convite' }),
-        inp,
-        h('p', { id: 'rsvp-cod-ajuda', class: 'ajuda', text: 'Ele está na mensagem em que enviamos o link do convite.' })
-      ),
-      h('div', { class: 'acoes' }, h('button', { type: 'submit', class: 'btn', text: 'Continuar' }))
-    );
-    box.append(form);
-    if (focar) inp.focus();
+    box.append(h('div', { class: 'rsvp-card' }, h('p', { class: 'msg', text: texto })));
   }
 
-  async function buscar(c, focar) {
-    codigoAtual = c;
+  /* --- Formulário: nome, vai ou não, acompanhantes, restrições e recado --- */
+  function etapaFormulario(anterior, focar) {
     limpar();
-    box.append(h('p', { class: 'rsvp-card carregando', text: 'Procurando seu convite…' }));
-    try {
-      const r = await consultar(c);
-      if (!r.ok) return etapaCodigo(ERROS[r.erro] || ERROS.rede, focar);
-      convite = r.convite;
-      saudar(convite.familia);
-      etapaResposta(focar);
-    } catch (e) {
-      etapaCodigo(ERROS.rede, focar);
-    }
-  }
+    const a = anterior || {};
+    const id = a.id || novoId();
 
-  /* --- Etapa 2: vai ou não vai, quantas pessoas, acompanhantes --- */
-  function etapaResposta(focar) {
-    limpar();
-    const c = convite;
-    const max = Math.max(1, Number(c.maximo) || 1);
-    const respondeu = c.status === 'Confirmado' || c.status === 'Não vai';
-    const titulo = h('h3', { tabindex: '-1', text: `Olá, ${c.familia}` });
-    const sub = h('p', { class: 'ola-sub', text: max > 1 ? `Reservamos até ${max} lugares para vocês.` : 'Reservamos um lugar para você.' });
+    const nome = h('input', { type: 'text', id: 'rsvp-nome', maxlength: '80', autocomplete: 'name', autocapitalize: 'words', required: true });
+    nome.value = a.nome || '';
 
-    if (c.prazoEncerrado) {
-      box.append(h('div', { class: 'rsvp-card' }, titulo, sub,
-        h('p', { class: 'msg', text: respondeu
-          ? `O prazo terminou. Sua resposta registrada: ${c.status === 'Confirmado' ? `vai, ${c.pessoas} pessoa(s)` : 'não vai'}. Para mudar algo, fale com os noivos.`
-          : ERROS.prazo })));
-      if (focar) titulo.focus();
-      return;
-    }
-
-    const vaiAtual = c.status === 'Confirmado' ? 'sim' : c.status === 'Não vai' ? 'nao' : '';
     const opcao = (valor, rotulo) => h('label', { class: 'opcao' },
-      h('input', { type: 'radio', name: 'vai', value: valor, checked: vaiAtual === valor }),
+      h('input', { type: 'radio', name: 'vai', value: valor, checked: a.vai === valor }),
       h('span', { text: rotulo }));
 
-    // Quantidade de pessoas (só aparece se o convite permitir mais de uma)
-    const selPessoas = h('select', { id: 'rsvp-pes' },
-      Array.from({ length: max }, (_, i) => h('option', { value: String(i + 1), text: i === 0 ? '1, só eu' : String(i + 1) })));
-    if (c.pessoas >= 1 && c.pessoas <= max) selPessoas.value = String(c.pessoas);
+    // Lista de acompanhantes: começa vazia (só a pessoa) e cresce pelo botão
+    const lista = h('div', { class: 'acomp-lista' });
+    const btnAdd = h('button', { type: 'button', class: 'btn btn--linha btn--add', text: 'Adicionar acompanhante' });
+    const ajudaAc = h('p', { class: 'ajuda', id: 'rsvp-ac-ajuda' });
 
-    const anteriores = String(c.acompanhantes || '').split(',').map((x) => x.trim()).filter(Boolean);
-    const caixaAcomp = h('div');
-    function desenharAcomp() {
-      const atuais = $$('input', caixaAcomp).map((i) => i.value);
-      const n = Number(selPessoas.value) - 1;
-      caixaAcomp.replaceChildren();
-      for (let i = 0; i < n; i++) {
-        const id = 'rsvp-ac' + i;
-        const inp = h('input', { type: 'text', id, maxlength: '60', autocomplete: 'off' });
-        inp.value = atuais[i] ?? anteriores[i] ?? '';
-        caixaAcomp.append(h('div', { class: 'campo' }, h('label', { for: id, text: `Nome do acompanhante ${i + 1}` }), inp));
-      }
+    function renumerar() {
+      const linhas = $$('.acomp-linha', lista);
+      linhas.forEach((l, i) => {
+        const inp = $('input', l), lab = $('label', l), rem = $('button', l);
+        inp.id = 'rsvp-ac' + i;
+        lab.setAttribute('for', inp.id);
+        lab.textContent = `Acompanhante ${i + 1}`;
+        rem.setAttribute('aria-label', `Remover acompanhante ${i + 1}`);
+      });
+      const n = linhas.length;
+      btnAdd.hidden = n >= MAX_AC;
+      ajudaAc.textContent = n === 0
+        ? (MAX_AC > 0 ? `Se for só você, pode deixar assim. Dá para incluir até ${MAX_AC}.` : '')
+        : n >= MAX_AC ? `Você chegou ao limite de ${MAX_AC} acompanhantes.` : `Você pode incluir até ${MAX_AC}.`;
+      totalTxt.textContent = `Total: ${n + 1} ${n === 0 ? 'pessoa' : 'pessoas'}, contando você.`;
     }
-    selPessoas.addEventListener('change', desenharAcomp);
-    desenharAcomp();
+    function addAcomp(valor, focarNovo) {
+      if ($$('.acomp-linha', lista).length >= MAX_AC) return;
+      const inp = h('input', { type: 'text', maxlength: '60', autocomplete: 'off', autocapitalize: 'words' });
+      inp.value = valor || '';
+      const rem = h('button', { type: 'button', class: 'acomp-remover', text: 'Remover' });
+      const linha = h('div', { class: 'campo acomp-linha' }, h('label'), h('div', { class: 'acomp-campo' }, inp, rem));
+      rem.addEventListener('click', () => {
+        const linhas = $$('.acomp-linha', lista);
+        const i = linhas.indexOf(linha);
+        linha.remove();
+        renumerar();
+        const resto = $$('.acomp-linha input', lista);
+        (resto[i] || resto[i - 1] || btnAdd).focus();
+        live.textContent = 'Acompanhante removido.';
+      });
+      lista.append(linha);
+      renumerar();
+      if (focarNovo) inp.focus();
+    }
+    btnAdd.addEventListener('click', () => addAcomp('', true));
+
+    const totalTxt = h('p', { class: 'acomp-total', 'aria-live': 'polite' });
 
     const restr = h('textarea', { id: 'rsvp-res', maxlength: '300', rows: '3' });
-    restr.value = c.restricoes || '';
+    restr.value = a.restricoes || '';
     const recado = h('textarea', { id: 'rsvp-msg', maxlength: '500', rows: '3' });
-    recado.value = c.mensagem || '';
+    recado.value = a.mensagem || '';
+
+    // Campo-armadilha para robôs: pessoas não veem nem preenchem
+    const armadilha = h('input', { type: 'text', name: 'site', tabindex: '-1', autocomplete: 'off' });
 
     const detalhes = h('div', { id: 'rsvp-det' },
-      max > 1 && h('div', { class: 'campo' }, h('label', { for: 'rsvp-pes', text: 'Quantas pessoas, contando você?' }), selPessoas),
-      caixaAcomp,
+      MAX_AC > 0 && h('fieldset', { class: 'campo', 'aria-describedby': 'rsvp-ac-ajuda' },
+        h('legend', { text: 'Quem vai com você?' }),
+        lista, ajudaAc, btnAdd, totalTxt),
       h('div', { class: 'campo' }, h('label', { for: 'rsvp-res', text: 'Alguma restrição alimentar? (opcional)' }), restr)
     );
 
     const erro = h('p', { class: 'msg msg--erro', role: 'alert', hidden: true });
     const btn = h('button', { type: 'submit', class: 'btn', text: 'Enviar resposta' });
 
+    const titulo = h('h3', { tabindex: '-1', text: anterior ? 'Alterar resposta' : 'Confirme sua presença' });
     const form = h('form', { class: 'rsvp-card', novalidate: true },
-      titulo, sub,
-      respondeu && h('p', { class: 'msg', text: `Já recebemos sua resposta${c.respondidoEm ? ' em ' + c.respondidoEm : ''}. Se algo mudou, altere abaixo e envie de novo.` }),
+      titulo,
+      anterior && h('p', { class: 'msg', text: 'Mude o que precisar e envie de novo. Sua resposta anterior será substituída.' }),
+      h('div', { class: 'campo' },
+        h('label', { for: 'rsvp-nome', text: 'Seu nome completo' }), nome),
       h('fieldset', { class: 'campo' }, h('legend', { text: 'Você poderá ir?' }),
         h('div', { class: 'opcoes' }, opcao('sim', 'Sim, estarei lá'), opcao('nao', 'Não poderei ir'))),
       detalhes,
       h('div', { class: 'campo' }, h('label', { for: 'rsvp-msg', text: 'Um recado para os noivos (opcional)' }), recado),
+      h('div', { class: 'armadilha', 'aria-hidden': 'true' }, armadilha),
       erro,
       h('div', { class: 'acoes' }, btn,
-        digitado && h('button', { type: 'button', class: 'link-btn', text: 'Usar outro código',
-          onclick: () => { codigoAtual = ''; digitado = false; etapaCodigo('', true); } }))
+        anterior && h('button', { type: 'button', class: 'link-btn', text: 'Cancelar',
+          onclick: () => etapaRespondido(anterior, true) }))
     );
+
+    (a.acompanhantes || []).slice(0, MAX_AC).forEach((n) => addAcomp(n, false));
+    renumerar();
 
     const atualizar = () => { detalhes.hidden = form.elements.vai.value !== 'sim'; };
     form.addEventListener('change', (e) => { if (e.target.name === 'vai') atualizar(); });
@@ -1035,29 +1054,36 @@ const CONFIG = {
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const vai = form.elements.vai.value;
       const mostrarErro = (t, alvo) => { erro.textContent = t; erro.hidden = false; if (alvo) alvo.focus(); };
+      const nomeVal = nome.value.replace(/\s+/g, ' ').trim();
+      if (!nomeVal) return mostrarErro(ERROS.nome, nome);
+      const vai = form.elements.vai.value;
       if (!vai) return mostrarErro('Escolha se você poderá ir.', form.querySelector('input[name=vai]'));
 
-      const nomes = vai === 'sim' ? $$('input', caixaAcomp) : [];
-      const vazio = nomes.find((i) => !i.value.trim());
-      if (vazio) return mostrarErro('Preencha o nome de cada acompanhante ou diminua o número de pessoas.', vazio);
+      const campos = vai === 'sim' ? $$('.acomp-linha input', lista) : [];
+      const vazio = campos.find((i) => !i.value.trim());
+      if (vazio) return mostrarErro('Preencha o nome do acompanhante ou toque em Remover.', vazio);
+
+      const dados = {
+        id,
+        nome: nomeVal,
+        vai,
+        acompanhantes: campos.map((i) => i.value.replace(/\s+/g, ' ').trim()),
+        restricoes: vai === 'sim' ? restr.value.trim() : '',
+        mensagem: recado.value.trim(),
+        site: armadilha.value
+      };
 
       erro.hidden = true;
       btn.disabled = true;
       btn.textContent = 'Enviando…';
       try {
-        const r = await enviar({
-          c: codigoAtual,
-          vai,
-          pessoas: vai === 'sim' ? Number(selPessoas.value) : 0,
-          acompanhantes: nomes.map((i) => i.value.trim()),
-          restricoes: vai === 'sim' ? restr.value.trim() : '',
-          mensagem: recado.value.trim()
-        });
+        const r = await enviar(dados);
         if (!r.ok) throw new Error(r.erro || 'rede');
-        convite = r.convite;
-        etapaFinal(vai);
+        delete dados.site;
+        dados.quando = r.quando || '';
+        salvar(dados);
+        etapaFinal(dados);
       } catch (err) {
         btn.disabled = false;
         btn.textContent = 'Enviar resposta';
@@ -1069,40 +1095,62 @@ const CONFIG = {
     if (focar) titulo.focus();
   }
 
-  /* --- Etapa 3: resposta registrada --- */
-  function etapaFinal(vai) {
+  function resumoTexto(d) {
+    if (d.vai !== 'sim') return 'Você avisou que não poderá ir.';
+    const n = (d.acompanhantes || []).length;
+    return n === 0
+      ? (MAX_AC > 0 ? 'Você confirmou presença, só você.' : 'Você confirmou presença.')
+      : `Você confirmou presença com ${n === 1 ? '1 acompanhante' : n + ' acompanhantes'}: ${d.acompanhantes.join(', ')}.`;
+  }
+
+  function acoesDepois(d) {
+    return h('div', { class: 'acoes' },
+      !prazoEncerrado() && h('button', { type: 'button', class: 'btn btn--linha', text: 'Alterar resposta', onclick: () => etapaFormulario(d, true) }),
+      !prazoEncerrado() && h('button', { type: 'button', class: 'link-btn', text: 'Responder por outra pessoa',
+        onclick: () => { esquecer(); etapaFormulario(null, true); } }));
+  }
+
+  /* --- Resposta acabou de ser enviada --- */
+  function etapaFinal(d) {
     limpar();
-    const t = h('h3', { tabindex: '-1', text: vai === 'sim' ? 'Presença confirmada' : 'Resposta registrada' });
-    const texto = vai === 'sim'
-      ? `Obrigado, ${convite.familia}. ${convite.pessoas > 1 ? `Guardamos ${convite.pessoas} lugares` : 'Guardamos seu lugar'} para celebrar com a gente em ${textos.dataLonga}.`
-      : `Obrigado por avisar, ${convite.familia}. Vamos sentir sua falta.`;
-    // selo pequeno como "carimbo" de confirmação
-    const selo = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    selo.setAttribute('viewBox', '0 0 240 240');
-    selo.setAttribute('class', 'selo-ok');
-    selo.setAttribute('aria-hidden', 'true');
-    const uso = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    uso.setAttribute('href', '#selo');
-    selo.append(uso);
+    const t = h('h3', { tabindex: '-1', text: d.vai === 'sim' ? 'Presença confirmada' : 'Resposta registrada' });
+    const total = 1 + (d.acompanhantes || []).length;
+    const texto = d.vai === 'sim'
+      ? `Obrigado, ${primeiroNome(d.nome)}. ${total > 1 ? `Guardamos ${total} lugares` : 'Guardamos seu lugar'} para celebrar com a gente em ${textos.dataLonga}.`
+      : `Obrigado por avisar, ${primeiroNome(d.nome)}. Vamos sentir sua falta.`;
     box.append(h('div', { class: 'rsvp-card sucesso' },
-      selo, t,
+      seloPequeno(), t,
       h('p', { class: 'ola-sub', text: texto }),
-      h('div', { class: 'acoes' }, h('button', { type: 'button', class: 'btn btn--linha', text: 'Alterar resposta', onclick: () => etapaResposta(true) }))
-    ));
+      acoesDepois(d)));
     t.focus();
     live.textContent = t.textContent;
   }
 
+  /* --- Quem já respondeu neste aparelho e voltou ao site --- */
+  function etapaRespondido(d, focar) {
+    limpar();
+    const t = h('h3', { tabindex: '-1', text: `Olá, ${primeiroNome(d.nome)}` });
+    box.append(h('div', { class: 'rsvp-card sucesso' },
+      seloPequeno(), t,
+      h('p', { class: 'ola-sub', text: `Já recebemos sua resposta${d.quando ? ' em ' + d.quando : ''}. ${resumoTexto(d)}` }),
+      prazoEncerrado() && h('p', { class: 'msg', text: 'O prazo para confirmar terminou. Para mudar algo, fale com os noivos.' }),
+      acoesDepois(d)));
+    if (focar) t.focus();
+  }
+
   /* --- Início --- */
+  const salvo = lerSalvo();
   if (!API) {
     box.append(h('div', { class: 'acoes' }, botao('', {
       texto: 'Confirmar presença',
       notaPendente: 'A confirmação de presença abre em breve. Avisaremos vocês por aqui.'
     })));
-  } else if (codigoAtual) {
-    buscar(codigoAtual, false);   // link individual: já abre o convite da família
+  } else if (salvo) {
+    etapaRespondido(salvo, false);
+  } else if (prazoEncerrado()) {
+    aviso(ERROS.prazo);
   } else {
-    etapaCodigo('', false);
+    etapaFormulario(null, false);
   }
 
   /* ---------- Presentes ---------- */
