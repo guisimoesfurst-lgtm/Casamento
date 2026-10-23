@@ -251,29 +251,8 @@ h2{font-size:clamp(2rem,7vw,3rem); letter-spacing:.005em}
 .js .hero-foto img{opacity:0; transform:scale(1.05)}
 .revealed .hero-foto img{opacity:1; transform:none; transition:opacity 1.3s ease, transform 2.6s cubic-bezier(.2,.6,.2,1)}
 
-/* Galeria */
-.galeria{display:grid; grid-template-columns:repeat(3,1fr); gap:.75rem; margin-top:2.6rem}
-.galeria > *{aspect-ratio:4/5; border-radius:2px; overflow:hidden}
-.galeria > *:first-child{grid-column:span 2; grid-row:span 2; aspect-ratio:auto}
-.foto-btn{padding:0; border:0; background:var(--linha); cursor:zoom-in; display:block; width:100%; height:100%}
-.foto-btn img{width:100%; height:100%; object-fit:cover; transition:transform .6s ease}
-.foto-btn:hover img{transform:scale(1.03)}
-.foto-vazia{
-  display:flex; align-items:center; justify-content:center; flex-direction:column; gap:.4rem;
-  background:var(--marfim); border:1px dashed #C9C2B1; color:#7b776b; font-size:.85rem; padding:1rem
-}
-.foto-vazia svg{width:28px; color:var(--salvia)}
-.historia-texto{text-align:left; max-width:34rem; margin:2.4rem auto 0; font-family:var(--f-titulo); font-size:1.22rem; line-height:1.75; font-weight:400}
-.historia-texto p{margin:0 0 1em}
 .nota{font-size:.88rem; color:#6c695e; font-style:normal}
 
-/* Lightbox */
-dialog.lb{border:0; padding:0; background:transparent; max-width:min(92vw,900px); max-height:92vh}
-dialog.lb::backdrop{background:rgba(41,40,34,.86)}
-dialog.lb img{max-height:80vh; width:auto; margin:0 auto; border-radius:2px}
-.lb-bar{display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-top:.8rem; color:var(--marfim); font-size:.9rem}
-.lb-bar button{background:none; border:1px solid rgba(245,241,233,.5); color:var(--marfim); padding:.45rem .9rem; border-radius:999px; font:inherit; cursor:pointer}
-.lb-bar button:focus-visible{outline-color:var(--marfim)}
 
 /* Contagem regressiva */
 .contagem{display:grid; grid-template-columns:repeat(4,1fr); max-width:34rem; margin:2.6rem auto 0}
@@ -378,9 +357,6 @@ footer .data{font-family:var(--f-titulo); letter-spacing:.3em; margin:0; color:#
 footer .reabrir{margin-top:2.2rem; background:none; border:0; color:#b9bcb0; font:inherit; font-size:.88rem; text-decoration:underline; text-underline-offset:4px; cursor:pointer; padding:.5rem}
 footer :focus-visible{outline-color:var(--marfim)}
 
-@media (min-width:720px){
-  .galeria{gap:1rem}
-}
 @media (max-width:420px){
   .contagem b{font-size:2.1rem}
   .contagem small{font-size:.75rem}
@@ -399,7 +375,6 @@ footer :focus-visible{outline-color:var(--marfim)}
   .js .hero-foto img{transform:none}
   .revealed .hero-foto img{transition:opacity .4s ease}
   .revealed .hero .in{transition:opacity .4s ease; transition-delay:0s}
-  .foto-btn img{transition:none}
 }
 </style>
 </head>
@@ -519,29 +494,12 @@ footer :focus-visible{outline-color:var(--marfim)}
         <span class="linha2 in" style="--i:4"><span class="e">e</span><span class="nome" data-fill="noivoB">Patricia</span></span>
       </h1>
       <p class="data in" style="--i:5"><span class="sr-only" data-fill="dataLonga">18 de dezembro de 2026</span><span aria-hidden="true" data-fill="dataCurta">18 · 12 · 2026</span></p>
-      <a class="desca in" style="--i:6" href="#historia">Continue descendo</a>
+      <a class="desca in" style="--i:6" href="#contagem">Continue descendo</a>
     </div>
   </header>
 
-  <!-- Seção 2 — Nossa história -->
-  <section class="sec sec--alt" id="historia" aria-labelledby="t-historia">
-    <div class="wrap wrap--wide">
-      <svg class="ramo" viewBox="0 0 120 30" aria-hidden="true"><g fill="currentColor"><path d="M2 15 H118" stroke="currentColor" stroke-width="1"/><use href="#folha" transform="translate(60 15) rotate(-35) scale(.4)"/><use href="#folha" transform="translate(60 15) rotate(-145) scale(.4)"/><use href="#folha" transform="translate(48 15) rotate(-150) scale(.3)"/><use href="#folha" transform="translate(72 15) rotate(-30) scale(.3)"/></g></svg>
-      <h2 id="t-historia">O amor nos trouxe até aqui</h2>
-
-      <!-- A galeria é montada pelo JavaScript a partir de CONFIG.fotos -->
-      <div class="galeria" id="galeria"></div>
-
-      <!-- TEXTO PROVISÓRIO: troque pelos parágrafos da história de vocês -->
-      <div class="historia-texto">
-        <p>Toda história bonita começa com um encontro. A nossa ainda está sendo escrita por aqui, e em breve vamos contar como tudo começou, os caminhos que nos trouxeram até este dia e o que sonhamos para o que vem depois.</p>
-        <p class="nota">Texto provisório. A história do casal será publicada em breve.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Seção 3 — Contagem regressiva -->
-  <section class="sec" id="contagem" aria-labelledby="t-contagem">
+  <!-- Seção 2 — Contagem regressiva -->
+  <section class="sec sec--alt" id="contagem" aria-labelledby="t-contagem">
     <div class="wrap">
       <h2 id="t-contagem">Falta pouco</h2>
       <p class="sub" data-fill="dataLonga">18 de dezembro de 2026</p>
@@ -555,8 +513,8 @@ footer :focus-visible{outline-color:var(--marfim)}
     </div>
   </section>
 
-  <!-- Seção 4 — Cerimônia e jantar -->
-  <section class="sec sec--alt" id="local" aria-labelledby="t-local">
+  <!-- Seção 3 — Cerimônia e jantar -->
+  <section class="sec" id="local" aria-labelledby="t-local">
     <div class="wrap wrap--wide">
       <h2 id="t-local">Cerimônia e jantar</h2>
       <div class="locais">
@@ -584,8 +542,8 @@ footer :focus-visible{outline-color:var(--marfim)}
     </div>
   </section>
 
-  <!-- Seção 5 — Confirmação de presença -->
-  <section class="sec" id="rsvp" aria-labelledby="t-rsvp">
+  <!-- Seção 4 — Confirmação de presença -->
+  <section class="sec sec--alt" id="rsvp" aria-labelledby="t-rsvp">
     <div class="wrap">
       <h2 id="t-rsvp">Sua presença é especial</h2>
       <p class="lead">Preparamos este dia com muito carinho e ele fica completo com você por perto. Conte para nós se poderá celebrar conosco.</p>
@@ -595,15 +553,15 @@ footer :focus-visible{outline-color:var(--marfim)}
     </div>
   </section>
 
-  <!-- Seção 6 — Lista de presentes -->
-  <section class="sec sec--alt" id="presentes" aria-labelledby="t-presentes">
+  <!-- Seção 5 — Lista de presentes -->
+  <section class="sec" id="presentes" aria-labelledby="t-presentes">
     <div class="wrap">
       <h2 id="t-presentes">Um presente para nossa nova fase</h2>
       <p class="lead">O maior presente é ter você com a gente. Se quiser nos mimar, reunimos algumas sugestões para o nosso novo lar.</p>
       <div class="acoes" id="pr-acoes"></div>
     </div>
   </section>
-  <!-- Seção 7 — Foto de despedida. Para trocar, envie outra imagem com o nome fotos/final.jpg -->
+  <!-- Seção 6 — Foto de despedida. Para trocar, envie outra imagem com o nome fotos/final.jpg -->
   <section class="final" aria-labelledby="t-final">
     <figure class="final-foto">
       <div class="final-txt">
@@ -621,17 +579,6 @@ footer :focus-visible{outline-color:var(--marfim)}
   <p class="data" data-fill="dataCurta">18 · 12 · 2026</p>
   <button class="reabrir" type="button" id="reabrir">Ver o convite fechado de novo</button>
 </footer>
-
-<!-- Ampliação das fotos -->
-<dialog class="lb" id="lightbox" aria-label="Foto ampliada">
-  <img id="lb-img" alt="">
-  <div class="lb-bar">
-    <button type="button" id="lb-prev">Anterior</button>
-    <span id="lb-cont"></span>
-    <button type="button" id="lb-next">Próxima</button>
-    <button type="button" id="lb-close">Fechar</button>
-  </div>
-</dialog>
 
 <script>
 /* ==========================================================================
@@ -675,11 +622,7 @@ const CONFIG = {
 
   presentes: {
     url: "https://www.finalfeliz.de/patricia-fernandes-de-carvalho--guilherme-simoes-furst"   // link da lista de presentes. Vazio = botão desativado.
-  },
-
-  // Fotos do casal. Envie as imagens para uma pasta "fotos" no repositório e liste aqui.
-  // A primeira aparece em destaque. Ex.: { src: "fotos/01.jpg", alt: "Guilherme e Patricia na praia" }
-  fotos: []
+  }
 };
 
 /* ==========================================================================
@@ -771,58 +714,6 @@ const CONFIG = {
   sealBtn.addEventListener('click', abrir);
   $('#tag').addEventListener('click', abrir);
   $('#reabrir').addEventListener('click', fecharDeNovo);
-
-  /* ======================================================================
-     GALERIA
-     ====================================================================== */
-  const galeria = $('#galeria');
-  const fotos = (CONFIG.fotos || []).filter((f) => f && f.src);
-  const iconeFoto = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1"/><circle cx="9" cy="10" r="1.6"/><path d="M4 18l5-5 4 4 3-3 4 4"/></svg>';
-
-  if (!fotos.length) {
-    for (let i = 0; i < 3; i++) {
-      const v = document.createElement('div');
-      v.className = 'foto-vazia';
-      v.innerHTML = iconeFoto + '<span>Foto em breve</span>';
-      galeria.appendChild(v);
-    }
-  } else {
-    fotos.forEach((f, i) => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'foto-btn';
-      b.setAttribute('aria-label', `Ampliar foto ${i + 1} de ${fotos.length}${f.alt ? ': ' + f.alt : ''}`);
-      const img = document.createElement('img');
-      img.src = f.src; img.alt = f.alt || ''; img.loading = 'lazy'; img.decoding = 'async';
-      b.appendChild(img);
-      b.addEventListener('click', () => abrirFoto(i));
-      galeria.appendChild(b);
-    });
-  }
-
-  const lb = $('#lightbox'), lbImg = $('#lb-img'), lbCont = $('#lb-cont');
-  let atual = 0;
-  function mostrar(i) {
-    atual = (i + fotos.length) % fotos.length;
-    lbImg.src = fotos[atual].src;
-    lbImg.alt = fotos[atual].alt || `Foto ${atual + 1}`;
-    lbCont.textContent = `${atual + 1} / ${fotos.length}`;
-    const varias = fotos.length > 1;
-    $('#lb-prev').hidden = !varias; $('#lb-next').hidden = !varias;
-  }
-  function abrirFoto(i) {
-    mostrar(i);
-    if (typeof lb.showModal === 'function') lb.showModal();
-    else window.open(fotos[i].src, '_blank', 'noopener');
-  }
-  $('#lb-prev').addEventListener('click', () => mostrar(atual - 1));
-  $('#lb-next').addEventListener('click', () => mostrar(atual + 1));
-  $('#lb-close').addEventListener('click', () => lb.close());
-  lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
-  lb.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') mostrar(atual - 1);
-    if (e.key === 'ArrowRight') mostrar(atual + 1);
-  });
 
   /* ======================================================================
      CONTAGEM REGRESSIVA
