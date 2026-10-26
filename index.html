@@ -76,8 +76,9 @@ a{color:inherit}
    2. CAPA — convite fechado, feito com a foto fotos/capa.jpg.
    A foto é cortada ao meio na dobra: cada aba mostra uma metade e,
    ao tocar no selo, as duas abas giram e o selo da foto se parte junto.
-   Para trocar a foto, envie outra com o mesmo nome (de preferência em pé,
-   proporção 2:3, com a dobra e o selo no centro).
+   A foto capa.jpg foi estendida em cima e embaixo com o próprio papel, para
+   preencher celulares compridos. Se trocar por outra foto, as medidas do selo
+   abaixo (posição e tamanho) precisam ser refeitas.
    ========================================================================== */
 #cover{
   position:fixed; inset:0; z-index:50;
@@ -107,39 +108,39 @@ a{color:inherit}
 /* Palco do tamanho da tela inteira; cada aba mostra só a sua metade dele */
 .palco{
   position:absolute; top:0; bottom:0; width:200%;
-  /* Largura da foto: cabe em pé no celular e no computador, sem cortar a etiqueta */
-  --foto-w: min(calc(100vw / .86), calc(100vh / 1.28));
+  /* Largura da foto: sem cortar a etiqueta (lados) nem o raminho (alto) */
+  --foto-w: min(calc(100vw / .9), calc(100vh * .82));
 }
-@supports (width:1cqw){ .palco{ --foto-w: min(calc(100cqw / .86), calc(100cqh / 1.28)); } }
+@supports (width:1cqw){ .palco{ --foto-w: min(calc(100cqw / .9), calc(100cqh * .82)); } }
 .door--l .palco{left:0}
 .door--r .palco{right:0}
 .capa-fundo{ /* a mesma foto, desfocada, preenchendo as sobras da tela */
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover; max-width:none;
 }
 .capa-foto{
-  position:absolute; left:50%; top:50%;
+  /* a dobra (50,4% da largura) fica no meio da tela e o selo a 52% da altura */
+  position:absolute; left:calc(50% - var(--foto-w) * .5042); top:calc(52% - var(--foto-w) * 1.124);
   width:var(--foto-w); height:auto; max-width:none;
-  aspect-ratio:1024/1536;
-  transform:translate(-50%,-50%);
-  -webkit-mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent),linear-gradient(to bottom,transparent,#000 4%,#000 96%,transparent);
+  aspect-ratio:1081/2375;
+  -webkit-mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent),linear-gradient(to bottom,transparent,#000 3%,#000 97%,transparent);
   -webkit-mask-composite:source-in;
-  mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent),linear-gradient(to bottom,transparent,#000 4%,#000 96%,transparent);
+  mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent),linear-gradient(to bottom,transparent,#000 3%,#000 97%,transparent);
   mask-composite:intersect;
 }
 
 /* Botão invisível exatamente sobre o selo da foto (recebe o toque e o foco).
-   O selo fica a 50% da largura e a 55% da altura da foto, com 28% da largura dela. */
+   O selo fica no centro da dobra, a 52% da altura da tela, com 28% da largura da foto. */
 #sealBtn{
   position:absolute; z-index:10; left:50%;
-  top:calc(50% + var(--foto-w) * 1.5 * .05);
+  top:52%;
   width:calc(var(--foto-w) * .28); height:calc(var(--foto-w) * .28);
-  --foto-w: min(calc(100vw / .86), calc(100vh / 1.28));
+  --foto-w: min(calc(100vw / .9), calc(100vh * .82));
   transform:translate(-50%,-50%);
   border:0; border-radius:50%; background:transparent; cursor:pointer;
   -webkit-tap-highlight-color:transparent;
   transition:box-shadow .2s ease, transform .2s ease;
 }
-@supports (width:1cqw){ #sealBtn{ --foto-w: min(calc(100cqw / .86), calc(100cqh / 1.28)); } }
+@supports (width:1cqw){ #sealBtn{ --foto-w: min(calc(100cqw / .9), calc(100cqh * .82)); } }
 #sealBtn:focus-visible{outline:2px solid var(--marfim); box-shadow:0 0 0 5px var(--grafite); outline-offset:2px}
 
 /* --- Estados da animação de abertura --- */
@@ -230,12 +231,12 @@ h2{font-size:clamp(2rem,7vw,3rem); letter-spacing:.005em}
 /* Foto de despedida */
 .final{background:var(--fundo-2); padding:0}
 .final-foto{position:relative; margin:0 auto; max-width:40rem}
-.final-foto img{width:100%; height:auto; aspect-ratio:1200/1799; object-fit:cover}
+.final-foto img{width:100%; height:auto; aspect-ratio:1200/1800; object-fit:cover}
 .final-foto::before{ /* esmaecido de cima para baixo, onde ficam os nomes */
-  content:""; position:absolute; left:0; right:0; top:0; height:44%; z-index:1; pointer-events:none;
-  background:linear-gradient(to top, rgba(238,234,223,0) 0%, rgba(238,234,223,.7) 45%, var(--fundo-2) 88%);
+  content:""; position:absolute; left:0; right:0; top:0; height:30%; z-index:1; pointer-events:none;
+  background:linear-gradient(to top, rgba(238,234,223,0) 0%, rgba(238,234,223,.55) 50%, var(--fundo-2) 90%);
 }
-.final-txt{position:absolute; z-index:2; left:0; right:0; top:clamp(2.6rem,9vw,4.4rem); text-align:center; padding:0 1rem}
+.final-txt{position:absolute; z-index:2; left:0; right:0; top:clamp(1.4rem,5vw,3rem); text-align:center; padding:0 1rem}
 .final .com{margin:0; font-family:var(--f-titulo); font-size:clamp(1.05rem,3.8vw,1.3rem); letter-spacing:.16em; color:#4f4c43}
 .final h2{font-family:var(--f-script); font-size:clamp(2.6rem,11vw,4.2rem); line-height:1.1; margin-top:.2rem}
 
@@ -386,14 +387,14 @@ footer :focus-visible{outline-color:var(--marfim)}
   <div class="door door--l" aria-hidden="true">
     <div class="palco">
       <img class="capa-fundo" src="fotos/capa-fundo.jpg" alt="">
-      <img class="capa-foto" src="fotos/capa.jpg" width="1024" height="1536" alt="" fetchpriority="high" decoding="async">
+      <img class="capa-foto" src="fotos/capa.jpg" width="1081" height="2375" alt="" fetchpriority="high" decoding="async">
     </div>
   </div>
 
   <div class="door door--r" aria-hidden="true">
     <div class="palco">
       <img class="capa-fundo" src="fotos/capa-fundo.jpg" alt="">
-      <img class="capa-foto" src="fotos/capa.jpg" width="1024" height="1536" alt="" fetchpriority="high" decoding="async">
+      <img class="capa-foto" src="fotos/capa.jpg" width="1081" height="2375" alt="" fetchpriority="high" decoding="async">
     </div>
   </div>
 
@@ -409,8 +410,8 @@ footer :focus-visible{outline-color:var(--marfim)}
   <header class="hero" id="inicio">
     <!-- Foto de abertura. Para trocar, envie outra imagem com o mesmo nome: fotos/abertura.jpg -->
     <figure class="hero-foto">
-      <img src="fotos/abertura.jpg" width="2000" height="1334" fetchpriority="high"
-           alt="Guilherme e Patricia se olhando, abraçados, à beira de uma lagoa entre as árvores">
+      <img src="fotos/abertura.jpg" width="1600" height="1066" fetchpriority="high"
+           alt="Guilherme e Patricia de olhos fechados, testa com testa, à beira de uma lagoa entre as árvores">
     </figure>
     <div class="hero-txt">
       <p class="para in" id="saudacao" hidden style="--i:0"></p>
@@ -502,8 +503,8 @@ footer :focus-visible{outline-color:var(--marfim)}
         <p class="com">Com amor,</p>
         <h2 id="t-final"><span data-fill="noivoA">Guilherme</span> &amp; <span data-fill="noivoB">Patricia</span></h2>
       </div>
-      <img src="fotos/final.jpg" width="1200" height="1799" loading="lazy" decoding="async"
-           alt="Guilherme e Patricia abraçados num jardim, sorrindo para a câmera">
+      <img src="fotos/final.jpg" width="1200" height="1800" loading="lazy" decoding="async"
+           alt="Guilherme e Patricia abraçados num parque com palmeiras, sorrindo para a câmera">
     </figure>
   </section>
 </main>
