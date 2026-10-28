@@ -184,7 +184,7 @@ h2{font-size:clamp(2rem,7vw,3rem); letter-spacing:.005em}
 .hero .nome{font-family:var(--f-script); font-size:clamp(3.6rem,16vw,7rem); line-height:1; font-weight:400}
 .hero .nome--a{justify-self:start; padding-left:.1em}
 .hero .linha2{justify-self:end; display:flex; align-items:baseline; gap:.25em; margin-top:-.08em; padding-right:.05em}
-.hero .e{font-family:var(--f-script); font-size:clamp(2.4rem,10vw,4.4rem); color:var(--salvia-escura); line-height:1}
+.hero .e{font-family:var(--f-script); font-size:clamp(2.4rem,10vw,4.4rem); color:inherit; line-height:1}
 .hero .data{font-family:var(--f-titulo); font-size:clamp(1.25rem,4.4vw,1.7rem); letter-spacing:.32em; margin:2.2rem 0 0; padding-left:.32em}
 .hero .desca{display:inline-block; margin-top:2.6rem; font-size:.85rem; color:#6c695e; text-decoration:none; padding:.5rem}
 .hero .desca::after{content:""; display:block; width:1px; height:34px; margin:.5rem auto 0; background:currentColor; opacity:.5}
@@ -304,7 +304,19 @@ form.rsvp-card > h3{margin:0 0 1.6rem}
 
 /* Rodapé */
 footer{padding:4.5rem 1.5rem calc(3rem + env(safe-area-inset-bottom,0px)); text-align:center; background:var(--grafite); color:var(--marfim)}
-footer .selo-mini{width:76px; height:76px; margin:0 auto 1.2rem; display:block}
+/* Selo do rodapé: recorte do próprio selo da foto da capa (fotos/capa.jpg).
+   Usa as mesmas medidas da capa: dobra a 50,42% da largura, centro do selo a
+   1,124 × largura a partir do topo, diâmetro de 28% da largura da foto. */
+footer .selo-mini{
+  --s:96px;
+  width:var(--s); height:var(--s); margin:0 auto 1.2rem; display:block;
+  background:url("fotos/capa.jpg") no-repeat;
+  background-size:calc(var(--s) / .28) auto;
+  background-position:calc(var(--s) * .5 - var(--s) / .28 * .5042) calc(var(--s) * .5 - var(--s) / .28 * 1.124);
+  border-radius:50%;
+  -webkit-mask-image:radial-gradient(circle closest-side, #000 86%, transparent 100%);
+  mask-image:radial-gradient(circle closest-side, #000 86%, transparent 100%);
+}
 footer .data{font-family:var(--f-titulo); letter-spacing:.3em; margin:0; color:#cfd3c6}
 footer .dia{font-family:var(--f-script); font-size:1.9rem; line-height:1.2; margin:.5rem 0 0; color:var(--salvia)}
 footer .reabrir{margin-top:2.2rem; background:none; border:0; color:#b9bcb0; font:inherit; font-size:.88rem; text-decoration:underline; text-underline-offset:4px; cursor:pointer; padding:.5rem}
@@ -434,7 +446,7 @@ footer :focus-visible{outline-color:var(--marfim)}
         <g fill="none" stroke="currentColor" stroke-width=".9" opacity=".8"><path d="M18 84 C40 80 80 80 102 84"/></g>
         <g fill="currentColor" opacity=".8"><use href="#folha" transform="translate(60 81.5) rotate(-160) scale(.18)"/><use href="#folha" transform="translate(60 81.5) rotate(-20) scale(.18)"/></g>
       </svg>
-     <p class="frase in" style="--i:2">"Para que todos vejam e saibam e considere e juntamente entendam que a mão do senhor fez isso"<span class="ref">Isaías 41:20</span></p>
+     <p class="frase in" style="--i:2">"Para que todos vejam e saibam, considerem e juntamente entendam que a mão do senhor fez isso"<span class="ref">Isaías 41:20</span></p>
       <h1 id="heroTitle" tabindex="-1">
         <span class="nome nome--a in" style="--i:3" data-fill="noivoA">Guilherme</span>
         <span class="linha2 in" style="--i:4"><span class="e">e</span><span class="nome" data-fill="noivoB">Patricia</span></span>
@@ -496,7 +508,7 @@ footer :focus-visible{outline-color:var(--marfim)}
   <section class="sec sec--alt" id="rsvp" aria-labelledby="t-rsvp">
     <div class="wrap">
       <h2 id="t-rsvp">Sua presença é especial</h2>
-      <p class="lead">Preparamos este dia com muito carinho e ele fica completo com você por perto. Conte para nós se poderá celebrar conosco.</p>
+      <p class="lead">Preparamos este dia com muito carinho, e ele fica completo com você por perto. Conte para nós se poderá celebrar conosco.</p>
       <p class="nota" id="rsvp-prazo" hidden></p>
       <div id="rsvp-box"></div>
       <p class="sr-only" aria-live="polite" id="rsvp-live"></p>
@@ -507,7 +519,7 @@ footer :focus-visible{outline-color:var(--marfim)}
   <section class="sec" id="presentes" aria-labelledby="t-presentes">
     <div class="wrap">
       <h2 id="t-presentes">Um presente para nossa nova fase</h2>
-      <p class="lead">O maior presente é ter você com a gente. Se quiser nos mimar, reunimos algumas sugestões para o nosso novo lar.</p>
+      <p class="lead">O maior presente é ter você com a gente. Se quiser nos presentear, reunimos algumas sugestões para o nosso novo lar.</p>
       <div class="acoes" id="pr-acoes"></div>
     </div>
   </section>
@@ -525,7 +537,7 @@ footer :focus-visible{outline-color:var(--marfim)}
 </main>
 
 <footer>
-  <svg class="selo-mini" viewBox="0 0 240 240" aria-hidden="true"><use href="#selo"/></svg>
+  <div class="selo-mini" aria-hidden="true"></div>
   <p class="data" data-fill="dataCurta">18 · 12 · 2026</p>
   <p class="dia">Sexta-feira · 17:30</p>
   <button class="reabrir" type="button" id="reabrir">Ver o convite fechado de novo</button>
@@ -565,7 +577,7 @@ const CONFIG = {
     scriptUrl: "https://script.google.com/macros/s/AKfycby0nThRbw7QZmTRem2kUZxiW8Gdj515eKU4Mz_zeGMJxgookkUbCXiHVCGUgc55suhngg/exec",
     // Último dia para confirmar, no formato "AAAA-MM-DD" (o mesmo PRAZO do script).
     // O site mostra "até 15 de dezembro de 2026" e fecha o formulário depois desse dia.
-    prazo: "2026-12-15",
+    prazo: "2026-11-30",
     // Quantos acompanhantes cada pessoa pode incluir (o mesmo MAX_ACOMP do script).
     // 0 = cada convidado confirma só a si mesmo (o campo de acompanhantes some).
     maxAcompanhantes: 0
