@@ -747,7 +747,7 @@ const CONFIG = {
       d.classList.toggle('vazio', !valor);
     };
     preencher('nome', L.nome, 'A definir');
-    preencher('hora', `${textos.dataLonga} · ${L.horario || 'horário a confirmar'}`, '');
+    preencher('hora', `${textos.dataLonga} · ${L.horario || 'Logo após a cerimônia'}`, '');
     campo('hora').classList.toggle('vazio', !L.horario);
     preencher('end', L.endereco, 'A definir');
     const aviso = campo('aviso');
